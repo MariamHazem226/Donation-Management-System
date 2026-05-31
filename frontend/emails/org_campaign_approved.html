@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">Campaign Approved</h2>
+    <p th:text="${message}">Your campaign request has been approved.</p>
+    <p style="margin-top:10px;">
+        <strong th:text="${campaignTitle}">Campaign Title</strong>
+    </p>
+</div>
+</body>
+</html>
+

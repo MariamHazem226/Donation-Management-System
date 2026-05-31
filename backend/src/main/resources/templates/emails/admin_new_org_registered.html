@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">New Organization Registration</h2>
+    <p>A new organization has registered on the platform.</p>
+
+    <ul>
+        <li><strong>Name:</strong> <span th:text="${orgName}">Org Name</span></li>
+        <li><strong>Email:</strong> <span th:text="${orgEmail}">org@email.com</span></li>
+    </ul>
+</div>
+</body>
+</html>
+

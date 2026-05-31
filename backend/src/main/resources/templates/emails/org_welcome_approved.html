@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">Your Organization Is Approved</h2>
+    <p th:text="${message}">Your organization account has been approved.</p>
+
+    <p style="margin-top:14px;">
+        Hello <strong th:text="${orgName}">Organization</strong>,
+    </p>
+
+    <p>
+        Your organization account on GivingHands is now active. You can sign in and start making an impact.
+    </p>
+
+    <h3 style="margin:20px 0 8px 0;font-size:16px;">What you can do next</h3>
+    <ul>
+        <li>Create fundraising campaigns for your cause</li>
+        <li>Set goals, deadlines, and campaign details</li>
+        <li>Enable or disable volunteering per campaign</li>
+        <li>Review volunteer applications from your organization dashboard</li>
+        <li>Track donations and campaign progress in real time</li>
+    </ul>
+
+    <p style="margin-top:16px;">
+        Visit your <strong>Organization Dashboard</strong> to create and manage campaigns today.
+    </p>
+</div>
+</body>
+</html>

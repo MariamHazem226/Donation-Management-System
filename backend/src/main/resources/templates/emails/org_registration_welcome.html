@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">Welcome to GivingHands!</h2>
+    <p th:text="${message}">Thank you for registering your organization.</p>
+
+    <p style="margin-top:14px;">
+        Hello <strong th:text="${orgName}">Organization</strong>,
+    </p>
+
+    <p>
+        We are glad you joined GivingHands. Your registration was received successfully.
+        Our team will review your organization account shortly.
+    </p>
+
+    <p style="margin-top:16px;">
+        Once approved, you will receive a confirmation email and can sign in to your organization dashboard.
+    </p>
+</div>
+</body>
+</html>

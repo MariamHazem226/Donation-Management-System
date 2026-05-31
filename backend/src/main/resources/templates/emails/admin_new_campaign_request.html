@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">New Campaign Request</h2>
+    <p style="margin:0;">An organization submitted a new campaign for your approval.</p>
+
+    <p style="margin-top:14px;">
+        <strong th:text="${campaignTitle}">Campaign Title</strong>
+    </p>
+
+    <ul>
+        <li><strong>Organization:</strong> <span th:text="${orgName}">Org</span></li>
+        <li><strong>Contact email:</strong> <span th:text="${orgEmail}">email</span></li>
+        <li><strong>Goal:</strong> <span th:text="${goalAmount}">0</span></li>
+        <li><strong>Deadline:</strong> <span th:text="${deadline}">-</span></li>
+        <li><strong>Status:</strong> <span th:text="${status}">PENDING</span></li>
+    </ul>
+
+    <p style="margin-top:16px;">
+        Please review and approve or reject this campaign in the admin dashboard.
+    </p>
+</div>
+
+</body>
+</html>

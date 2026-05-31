@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;" th:text="${title}">New Volunteer Opportunity</h2>
+    <p style="margin:0;" th:text="${subtitle}">A campaign is accepting volunteer applications.</p>
+
+    <p style="margin-top:14px;">
+        <strong th:text="${campaignTitle}">Campaign</strong>
+    </p>
+
+    <p style="margin-top:16px;">
+        Visit GivingHands to learn more and apply if you would like to help.
+    </p>
+</div>
+
+</body>
+</html>

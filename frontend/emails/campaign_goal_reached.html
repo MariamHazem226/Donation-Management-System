@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;" th:text="${title}">Goal Reached 🎉</h2>
+    <p style="margin:0;">We’re excited to share that a campaign has reached its fundraising goal.</p>
+
+    <p style="margin-top:14px;">
+        <strong th:text="${campaignTitle}">Campaign</strong>
+    </p>
+
+    <ul>
+        <li><strong>Goal:</strong> <span th:text="${goalAmount}">0</span></li>
+        <li><strong>Raised:</strong> <span th:text="${currentAmount}">0</span></li>
+        <li><strong>Deadline:</strong> <span th:text="${deadline}">-</span></li>
+    </ul>
+
+    <p style="margin-top:16px;">
+        Your generosity makes a real impact.
+    </p>
+</div>
+
+</body>
+</html>
+

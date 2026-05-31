@@ -1,0 +1,29 @@
+package com.givinghands.givinghands.notification;
+
+public enum NotificationEventType {
+    // Newsletter subscribers
+    NEWSLETTER_CAMPAIGN_APPROVED_ACTIVE,
+    NEWSLETTER_CAMPAIGN_GOAL_REACHED,
+    NEWSLETTER_NEW_VOLUNTEER_OPPORTUNITIES_AVAILABLE,
+
+    // Organization (campaign creator)
+    ORG_VOLUNTEER_APPLIED,
+    ORG_CAMPAIGN_APPROVED,
+    ORG_CAMPAIGN_REJECTED,
+
+    // User
+    USER_DONATION_SUBMITTED,
+    USER_VOLUNTEER_APPROVED,
+    USER_VOLUNTEER_REJECTED,
+
+    // Admin
+    ADMIN_CAMPAIGN_GOAL_REACHED,
+    ADMIN_NEW_CAMPAIGN_REQUEST,
+    ADMIN_NEW_ORG_REGISTERED,
+
+    // Organization registration
+    ORG_REGISTRATION_WELCOME,
+    ORG_WELCOME_APPROVED
+}
+
+

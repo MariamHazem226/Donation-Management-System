@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;" th:text="${title}">Campaign Approved</h2>
+    <p style="margin:0;" th:text="${subtitle}">A campaign you may care about is now live on GivingHands.</p>
+
+    <p style="margin-top:14px;">
+        <strong th:text="${campaignTitle}">Campaign</strong>
+    </p>
+    <ul>
+        <li><strong>Goal:</strong> <span th:text="${goalAmount}">0</span></li>
+        <li><strong>Current:</strong> <span th:text="${currentAmount}">0</span></li>
+        <li><strong>Deadline:</strong> <span th:text="${deadline}">-</span></li>
+    </ul>
+
+    <p style="margin-top:16px;">
+        Thank you for supporting this mission.
+    </p>
+</div>
+
+</body>
+</html>
+

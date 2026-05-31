@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account | GivingHands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
+  <nav class="nav-main">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#3B82F6"/>
+          <circle cx="16" cy="12" r="2" fill="white"/>
+        </svg>
+        <span class="brand-text">Giving<span>Hands</span></span>
+      </div>
+      <!-- <button class="hamburger-btn" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </button> -->
+    </div>
+  </nav>
+  
+  <div class="auth-layout">
+    <div class="auth-left">
+      <div class="auth-brand">
+        <svg width="40" height="40" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#3B82F6"/>
+          <circle cx="16" cy="12" r="2" fill="white"/>
+        </svg>
+        <span>GivingHands</span>
+      </div>
+      <div class="auth-features">
+        <div class="feature">
+          <i class="fas fa-chart-line"></i>
+          <div>
+            <h4>Track your impact</h4>
+            <p>See exactly how your contributions change lives</p>
+          </div>
+        </div>
+        <div class="feature">
+          <i class="fas fa-certificate"></i>
+          <div>
+            <h4>Earn recognition</h4>
+            <p>Get verified badges and impact certificates</p>
+          </div>
+        </div>
+        <div class="feature">
+          <i class="fas fa-users"></i>
+          <div>
+            <h4>Join community</h4>
+            <p>Connect with like-minded changemakers</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="auth-right">
+      <div class="auth-card">
+        <div class="auth-header">
+          <h2>Create an account</h2>
+          <p>Start your journey as a changemaker today</p>
+        </div>
+        <form id="registerForm" class="auth-form">
+          <div class="form-row">
+            <div class="form-field half">
+              <label>First name</label>
+              <input type="text" placeholder="John" required>
+            </div>
+            <div class="form-field half">
+              <label>Last name</label>
+              <input type="text" placeholder="Doe" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Email address</label>
+            <div class="input-icon">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="name@company.com" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>Password</label>
+            <div class="input-icon">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Create a strong password" required>
+            </div>
+          </div>
+          <div class="form-field">
+            <label>I am a</label>
+            <div class="role-selector">
+              <label class="role-option">
+                <input type="radio" name="role" value="donor" checked>
+                <i class="fas fa-hand-holding-heart"></i>
+                <span>Donor</span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="role" value="volunteer">
+                <i class="fas fa-hands-helping"></i>
+                <span>Volunteer</span>
+              </label>
+              <label class="role-option">
+                <input type="radio" name="role" value="creator">
+                <i class="fas fa-bullhorn"></i>
+                <span>Creator</span>
+              </label>
+            </div>
+          </div>
+          <label class="checkbox terms">
+            <input type="checkbox" required>
+            I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+          </label>
+          <button type="submit" class="btn-auth-submit">Create Account</button>
+        </form>
+        <div class="auth-divider">
+          <span>Or continue with</span>
+        </div>
+        <div class="social-auth">
+          <a href="/api/auth/oauth/google?role=USER" class="social-btn google" style="text-decoration:none;display:flex;align-items:center;justify-content:center;gap:0.5rem;">
+            <i class="fab fa-google"></i> Google
+          </a>
+        </div>
+        <p class="auth-footer">
+          Already have an account? <a href="login.html">Sign in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+  <script src="js/main.js"></script>
+</body>
+</html>

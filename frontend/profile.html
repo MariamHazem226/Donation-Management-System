@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile | GivingHands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="profile-page">
+  <nav class="nav-main">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#3B82F6"/>
+          <circle cx="16" cy="12" r="2" fill="white"/>
+        </svg>
+        <span class="brand-text">Giving<span>Hands</span></span>
+      </div>
+      <div class="nav-actions"></div>
+    </div>
+  </nav>
+
+  <div class="profile-container">
+    <!-- Header -->
+    <div class="profile-header">
+      <div class="cover-photo" style="position:relative;">
+        <img id="coverPhoto"
+             src="https://images.unsplash.com/photo-1497366811353-2a7bb9c86f6d?w=1200"
+             alt="Cover"
+             style="width:100%;height:220px;object-fit:cover;">
+        <label class="cover-upload-label">
+          <i class="fas fa-camera"></i> Change Cover
+          <input type="file" id="coverInput" accept="image/*">
+        </label>
+      </div>
+      <div class="profile-info-wrapper">
+        <div class="avatar-upload-wrapper profile-avatar-large">
+          <img id="profileAvatar"
+               src="https://randomuser.me/api/portraits/lego/1.jpg"
+               alt="Avatar"
+               style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:4px solid white;">
+          <label class="avatar-upload-label" title="Change photo">
+            <i class="fas fa-camera"></i>
+            <input type="file" id="avatarInput" accept="image/*">
+          </label>
+        </div>
+        <div class="profile-details">
+          <h1 id="profileName">Loading...</h1>
+          <div class="profile-badges">
+            <span class="badge verified"><i class="fas fa-check-circle"></i> Verified Member</span>
+            <span class="badge donor" id="donorBadge" style="display:none"><i class="fas fa-heart"></i> Donor</span>
+            <span class="badge volunteer" id="volunteerBadge" style="display:none"><i class="fas fa-hands-helping"></i> Volunteer</span>
+          </div>
+          <div class="profile-meta">
+            <span><i class="fas fa-envelope"></i> <span id="profileEmail">-</span></span>
+            <span><i class="fas fa-user-tag"></i> <span id="profileRole">-</span></span>
+          </div>
+          <div class="profile-actions">
+            <button class="btn-primary" onclick="goToSettingsTab()"><i class="fas fa-edit"></i> Edit Profile</button>
+            <button class="btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs
+    <div class="profile-tabs">
+      <button class="tab-btn active" data-tab="overview">Overview</button>
+      <button class="tab-btn" data-tab="donations">My Donations</button>
+      <button class="tab-btn" data-tab="volunteer">Volunteer History</button>
+      <button class="tab-btn" data-tab="campaigns">Supported Campaigns</button>
+      <button class="tab-btn" data-tab="settings">Settings</button>
+    </div> -->
+
+    <!-- Overview -->
+    <div id="overviewTab" class="tab-content active">
+      <div class="stats-grid-profile">
+        <div class="stat-card-profile">
+          <div class="stat-icon"><i class="fas fa-dollar-sign"></i></div>
+          <div class="stat-info"><span class="stat-value" id="totalDonated">$0</span><span class="stat-label">Total Donated</span></div>
+        </div>
+        <div class="stat-card-profile">
+          <div class="stat-icon"><i class="fas fa-users"></i></div>
+          <div class="stat-info"><span class="stat-value" id="campaignsJoined">0</span><span class="stat-label">Campaigns Supported</span></div>
+        </div>
+        <div class="stat-card-profile">
+          <div class="stat-icon"><i class="fas fa-hands-helping"></i></div>
+          <div class="stat-info"><span class="stat-value" id="volunteerCount">0</span><span class="stat-label">Volunteer Applications</span></div>
+        </div>
+        <div class="stat-card-profile">
+          <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+          <div class="stat-info"><span class="stat-value" id="profileRoleBadge">-</span><span class="stat-label">Role</span></div>
+        </div>
+      </div>
+      <div class="activity-feed">
+        <h3><i class="fas fa-history"></i> Recent Activity</h3>
+        <div class="feed-list" id="recentActivity"><p style="color:#9ca3af;padding:1rem 0;">Loading...</p></div>
+      </div>
+    </div>
+
+    <!-- Donations -->
+    <div id="donationsTab" class="tab-content">
+      <div class="donations-list">
+        <h3 style="margin-bottom:1rem;">Donation History</h3>
+        <div id="donationsTable" class="donations-table"></div>
+      </div>
+    </div>
+
+    <!-- Volunteer -->
+    <div id="volunteerTab" class="tab-content">
+      <div class="volunteer-history">
+        <h3>My Volunteer Applications</h3>
+        <div id="volunteerHistoryList" class="volunteer-cards"></div>
+      </div>
+    </div>
+
+    <!-- Supported Campaigns -->
+    <div id="campaignsTab" class="tab-content">
+      <div class="supported-campaigns">
+        <h3>Campaigns You've Supported</h3>
+        <div id="supportedCampaignsList"></div>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div id="settingsTab" class="tab-content">
+      <div class="settings-container">
+        <form id="profileSettingsForm" class="settings-form">
+          <h3>Personal Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="settingsName" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label>Email Address</label>
+              <input type="email" id="settingsEmail" placeholder="your@email.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="settingsPassword" placeholder="Leave blank to keep current">
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" id="settingsPasswordConfirm" placeholder="Repeat new password">
+            </div>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:1rem;">
+            <button type="submit" class="btn-primary">Save Changes</button>
+            <button type="button" class="btn-secondary" onclick="logout()">Sign Out</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="js/main.js"></script>
+  <script>
+    // ── Go to settings tab ──
+    function goToSettingsTab() {
+      document.querySelectorAll('.profile-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.profile-container .tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelector('[data-tab="settings"]').classList.add('active');
+      document.getElementById('settingsTab').classList.add('active');
+    }
+
+    // ── Image upload handler ──
+    async function handleProfileImageUpload(file, type) {
+      if (!file) return;
+      const user = getCurrentUser();
+      if (!user) return;
+
+      // Immediately preview
+      const imgEl = type === 'avatar'
+        ? document.getElementById('profileAvatar')
+        : document.getElementById('coverPhoto');
+
+      const base64 = await new Promise(res => {
+        const r = new FileReader();
+        r.onload = e => res(e.target.result);
+        r.readAsDataURL(file);
+      });
+
+      if (imgEl) imgEl.src = base64;
+
+      // Save locally immediately (survives logout/login)
+      if (type === 'avatar') user.avatar = base64;
+      else user.cover = base64;
+      saveCurrentUser(user);
+      if (type === 'avatar') updateNavForLoggedInUser();
+
+      showToast('Uploading...');
+
+      // Try backend upload
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(`http://localhost:8080/api/users/${user.id}/${type}`, {
+          method: 'POST', body: formData
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const backendUrl = 'http://localhost:8080' + (data.avatarUrl || data.coverUrl || '');
+          if (type === 'avatar') { user.avatar = backendUrl; user.avatarUrl = backendUrl; if (imgEl) imgEl.src = backendUrl; updateNavForLoggedInUser(); }
+          else { user.cover = backendUrl; user.coverUrl = backendUrl; if (imgEl) imgEl.src = backendUrl; }
+          saveCurrentUser(user);
+          showToast(type === 'avatar' ? 'Profile photo saved! ✅' : 'Cover photo saved! ✅');
+          return;
+        }
+      } catch(e) {}
+
+      showToast('Photo saved locally ✅');
+    }
+
+    document.getElementById('avatarInput').addEventListener('change', function() {
+      handleProfileImageUpload(this.files && this.files[0], 'avatar');
+    });
+
+    document.getElementById('coverInput').addEventListener('change', function() {
+      handleProfileImageUpload(this.files && this.files[0], 'cover');
+    });
+
+    // ── Restore photos from localStorage immediately (normalize avatar/cover keys) ──
+    (function() {
+      const user = getCurrentUser ? getCurrentUser() : JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (!user) return;
+
+      if (!user.avatar && user.avatarUrl) user.avatar = user.avatarUrl;
+      if (!user.cover && user.coverUrl) user.cover = user.coverUrl;
+
+      if (user.avatar) { const el = document.getElementById('profileAvatar'); if (el) el.src = user.avatar; }
+      if (user.cover)  { const el = document.getElementById('coverPhoto');   if (el) el.src = user.cover;  }
+    })();
+  </script>
+</body>
+</html>

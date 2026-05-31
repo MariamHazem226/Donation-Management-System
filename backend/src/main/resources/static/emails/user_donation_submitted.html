@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">Donation Received</h2>
+    <p>Thank you for your generous donation.</p>
+
+    <p style="margin-top:14px;">
+        <strong th:text="${campaignTitle}">Campaign</strong>
+    </p>
+
+    <ul>
+        <li><strong>Amount:</strong> <span th:text="${amount}">0</span></li>
+        <li><strong>Date:</strong> <span th:text="${date}">-</span></li>
+    </ul>
+</div>
+</body>
+</html>
+

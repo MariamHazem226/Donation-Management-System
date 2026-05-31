@@ -1,0 +1,1110 @@
+// Campaign Data
+const campaignsData = [
+  {
+    id: 1,
+    title: "Digital Classrooms for Rural Kenya",
+    description: "Equipping 50 schools with computers and internet access to enable digital learning for 10,000+ students.",
+    category: "Education",
+    current: 284500,
+    goal: 350000,
+    image: "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600",
+    creator: "Education Africa Foundation",
+    volunteers: 127,
+    milestones: ["Phase 1: Assessment completed", "Phase 2: Equipment procurement in progress", "Phase 3: Installation scheduled Q2 2025"]
+  },
+  {
+    id: 2,
+    title: "Clean Water Wells for 50 Villages",
+    description: "Building sustainable water infrastructure to provide clean drinking water to 25,000 people in Sub-Saharan Africa.",
+    category: "Health",
+    current: 342000,
+    goal: 500000,
+    image: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=600",
+    creator: "Water for All",
+    volunteers: 89,
+    milestones: ["10 wells completed", "15 wells under construction", "Community training programs active"]
+  },
+  {
+    id: 3,
+    title: "Amazon Rainforest Protection",
+    description: "Acquiring and protecting 10,000 acres of critical rainforest habitat and indigenous territories.",
+    category: "Environment",
+    current: 1250000,
+    goal: 2000000,
+    image: "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600",
+    creator: "Rainforest Trust",
+    volunteers: 234,
+    milestones: ["5,000 acres protected", "3 ranger stations built", "Monitoring systems installed"]
+  },
+  {
+    id: 4,
+    title: "Emergency Medical Response",
+    description: "Deploying mobile clinics and medical supplies to conflict-affected regions.",
+    category: "Emergency",
+    current: 456000,
+    goal: 600000,
+    image: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=600",
+    creator: "Doctors Without Borders",
+    volunteers: 312,
+    milestones: ["2 mobile clinics operational", "Medical supplies distributed", "Local staff trained"]
+  },
+  {
+    id: 5,
+    title: "Ocean Plastic Cleanup Initiative",
+    description: "Removing 500 tons of plastic from our oceans using innovative collection technology.",
+    category: "Environment",
+    current: 892000,
+    goal: 1000000,
+    image: "https://images.unsplash.com/photo-1484291470158-b8f8d608850d?w=600",
+    creator: "Ocean Conservancy",
+    volunteers: 456,
+    milestones: ["Collection systems deployed", "200 tons collected", "Recycling partnership established"]
+  },
+  {
+    id: 6,
+    title: "Girls' Education Scholarship Fund",
+    description: "Providing 500 scholarships for girls to attend secondary school and university.",
+    category: "Education",
+    current: 675000,
+    goal: 750000,
+    image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=600",
+    creator: "Malala Fund",
+    volunteers: 167,
+    milestones: ["300 scholarships awarded", "Mentorship program launched", "150 students graduated"]
+  }
+];
+
+// Additional fake data for admin tables
+const fakeUsers = [
+  { name: "Emma Watson", email: "emma.w@example.com", role: "Donor", status: "Active", joined: "2024-01-15" },
+  { name: "James Wilson", email: "james.w@example.com", role: "Volunteer", status: "Active", joined: "2024-02-20" },
+  { name: "Lisa Chen", email: "lisa.c@example.com", role: "Creator", status: "Pending", joined: "2024-03-10" },
+  { name: "Mohammed Al-Rashid", email: "m.alrashid@example.com", role: "Donor", status: "Active", joined: "2024-01-05" },
+  { name: "Sofia Rodriguez", email: "sofia.r@example.com", role: "Volunteer", status: "Active", joined: "2024-02-28" }
+];
+
+const fakeVolunteers = [
+  { name: "Alice Johnson", email: "alice.j@example.com", campaign: "Education For All", hours: 45, joined: "2024-01-10", status: "Active" },
+  { name: "Bob Smith", email: "bob.s@example.com", campaign: "Clean Water Initiative", hours: 32, joined: "2024-01-20", status: "Active" },
+  { name: "Carol Davis", email: "carol.d@example.com", campaign: "Forest Protection", hours: 28, joined: "2024-02-01", status: "Active" },
+  { name: "David Brown", email: "david.b@example.com", campaign: "Medical Aid", hours: 56, joined: "2024-01-15", status: "Pending" }
+];
+
+// Global variables
+let currentFilter = "all";
+let currentSearch = "";
+
+// Mobile Navigation & Sidebar Toggle
+function toggleMobileMenu() {
+  const menu = document.querySelector('.nav-menu');
+  const sidebar = document.querySelector('.dashboard-sidebar');
+  const overlay = document.getElementById('mobile-overlay') || createOverlay();
+  
+  if (menu) {
+    menu.classList.toggle('active');
+    document.body.style.overflow = menu.classList.contains('active') ? 'hidden' : '';
+  }
+  
+  if (sidebar) {
+    sidebar.classList.toggle('open');
+    overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+    document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
+  }
+}
+
+function closeMobileMenus() {
+  const menu = document.querySelector('.nav-menu');
+  const sidebar = document.querySelector('.dashboard-sidebar');
+  const overlay = document.getElementById('mobile-overlay');
+  
+  if (menu) menu.classList.remove('active');
+  if (sidebar) {
+    sidebar.classList.remove('open');
+    if (overlay) overlay.style.display = 'none';
+  }
+  document.body.style.overflow = '';
+}
+
+function createOverlay() {
+  let overlay = document.getElementById('mobile-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'mobile-overlay';
+    overlay.className = 'mobile-overlay';
+    overlay.style.cssText = `
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 199;
+      display: none;
+    `;
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', closeMobileMenus);
+  }
+  return overlay;
+}
+
+// Close menus on escape or resize
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeMobileMenus();
+});
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 640) closeMobileMenus();
+});
+
+// Hero Slider & Stats Animation Functions
+function initHeroSlider() {
+  const slider = new bootstrap.Carousel(document.getElementById('heroSlider'), {
+    interval: 5000,
+    pause: 'hover',
+    wrap: true,
+    ride: 'carousel'
+  });
+  
+  // Pause on hover
+  $('#heroSlider').on('mouseenter', () => slider.pause());
+  $('#heroSlider').on('mouseleave', () => slider.cycle());
+}
+
+function animateCounters() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const statNumbers = entry.target.querySelectorAll('.stat-number');
+        statNumbers.forEach(number => animateNumber(number));
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const statsSection = document.querySelector('.statistics');
+  if (statsSection) {
+    observer.observe(statsSection);
+  }
+}
+
+function animateNumber(element) {
+  const target = element.getAttribute('data-target');
+  const targetNum = parseFloat(target.replace(/[,$]/g, ''));
+  const duration = 2000;
+  const increment = targetNum / (duration / 16);
+  let current = 0;
+
+  const timer = setInterval(() => {
+    current += increment;
+    if (current >= targetNum) {
+      current = targetNum;
+      clearInterval(timer);
+    }
+    
+    if (target.includes('$')) {
+      element.textContent = '$' + Math.floor(current).toLocaleString();
+    } else if (target.includes('K') || target.includes('M')) {
+      const num = Math.floor(current);
+      element.textContent = num.toLocaleString();
+    } else {
+      element.textContent = Math.floor(current).toLocaleString();
+    }
+  }, 16);
+}
+
+// Initialize page based on current HTML
+$(document).ready(() => {
+  // Hero slider
+  if (document.getElementById('heroSlider')) {
+    initHeroSlider();
+    animateCounters();
+  }
+  
+  // Show skeleton then load campaigns
+  if (document.getElementById('campaignsGrid')) {
+    showSkeleton();
+    setTimeout(() => {
+      renderCampaigns();
+      hideSkeleton();
+    }, 800);
+    setupFilters();
+  }
+  
+  // Admin dashboard initialization
+  if (document.querySelector('.dashboard-layout')) {
+    initAdminDashboard();
+    generateChartBars();
+    loadTopCampaigns();
+    loadActivityTimeline();
+  }
+  
+  // Campaign details page
+  if (document.getElementById('campaignDetailContainer')) {
+    loadCampaignDetails();
+  }
+  
+  // Volunteer page
+  if (document.getElementById('volunteerForm')) {
+    initVolunteerForm();
+    loadCampaignSelectList();
+  }
+  
+  // Auth forms
+  initAuthForms();
+  
+  // Close modals on outside click
+  $(document).on('click', (event) => {
+    if ($(event.target).hasClass('modal-overlay')) {
+      $(event.target).hide();
+    }
+  });
+});
+
+
+// Render Campaigns
+function renderCampaigns() {
+  const container = document.getElementById('campaignsGrid');
+  if (!container) return;
+  
+  let filtered = campaignsData.filter(c => 
+    (currentFilter === "all" || c.category === currentFilter) &&
+    (c.title.toLowerCase().includes(currentSearch.toLowerCase()) || 
+     c.description.toLowerCase().includes(currentSearch.toLowerCase()))
+  );
+  
+  container.innerHTML = `
+    <div class="row">
+      ${filtered.map(campaign => `
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+          <div class="campaign-card-modern h-100" onclick="viewCampaign(${campaign.id})">
+            <div class="campaign-image" style="background-image: url('${campaign.image}')">
+              <span class="campaign-category">${campaign.category}</span>
+            </div>
+            <div class="campaign-content p-4">
+              <h3 class="campaign-title">${campaign.title}</h3>
+              <p class="campaign-description">${campaign.description.substring(0, 100)}${campaign.description.length > 100 ? '...' : ''}</p>
+              <div class="progress-section">
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: ${(campaign.current / campaign.goal) * 100}%"></div>
+                </div>
+                <div class="progress-stats">
+                  <span class="raised">$${campaign.current.toLocaleString()}</span>
+                  <span class="goal">of $${campaign.goal.toLocaleString()}</span>
+                </div>
+              </div>
+              <div class="campaign-meta">
+                <div class="meta-item"><i class="fas fa-user"></i> ${campaign.creator}</div>
+                <div class="meta-item"><i class="fas fa-hands-helping"></i> ${campaign.volunteers} volunteers</div>
+              </div>
+              <div class="campaign-actions-modern">
+                <button class="btn btn-secondary btn-sm me-2" onclick="event.stopPropagation();viewCampaign(${campaign.id})">View Details</button>
+                <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openVolunteerModal(${campaign.id})">Volunteer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// Setup Filters
+function setupFilters() {
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      currentSearch = e.target.value;
+      renderCampaigns();
+    });
+  }
+  
+  const filterChips = document.querySelectorAll('.filter-chip');
+  filterChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      filterChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      currentFilter = chip.dataset.category || 'all';
+      renderCampaigns();
+    });
+  });
+}
+
+// View Campaign Details
+function viewCampaign(id) {
+  const campaign = campaignsData.find(c => c.id === id);
+  if (document.getElementById('campaignDetailContainer')) {
+    renderCampaignDetails(campaign);
+  } else {
+    localStorage.setItem('selectedCampaign', JSON.stringify(campaign));
+    window.location.href = 'campaign-details.html';
+  }
+}
+
+function renderCampaignDetails(campaign) {
+  const container = document.getElementById('campaignDetailContainer');
+  container.innerHTML = `
+    <div class="campaign-detail-card">
+      <div class="detail-hero" style="background-image: url('${campaign.image}')">
+        <div class="detail-hero-overlay">
+          <h1>${campaign.title}</h1>
+          <p>${campaign.description}</p>
+        </div>
+      </div>
+      <div class="detail-content">
+        <div class="progress-section">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${(campaign.current / campaign.goal) * 100}%"></div>
+          </div>
+          <div class="progress-stats">
+            <span class="raised">$${campaign.current.toLocaleString()} raised</span>
+            <span class="goal">Goal: $${campaign.goal.toLocaleString()}</span>
+          </div>
+        </div>
+        
+        <div class="creator-card">
+          <i class="fas fa-user-circle fa-2x"></i>
+          <div>
+            <strong>${campaign.creator}</strong>
+            <span style="display: block; font-size: 0.875rem; color: var(--gray-500);">Campaign Organizer</span>
+          </div>
+        </div>
+        
+        <h3>Volunteers (${campaign.volunteers})</h3>
+        <div class="volunteer-avatars">
+          ${generateVolunteerAvatars(campaign.volunteers)}
+        </div>
+        
+        <h3>Project Timeline</h3>
+        <div class="timeline">
+          ${campaign.milestones.map(m => `
+            <div class="timeline-item">
+              <strong>${m}</strong>
+            </div>
+          `).join('')}
+        </div>
+        
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+          <button class="btn-primary" onclick="openDonateModal(${campaign.id})">
+            <i class="fas fa-heart"></i> Donate Now
+          </button>
+          <button class="btn-secondary" onclick="openVolunteerModal(${campaign.id})">
+            <i class="fas fa-hands-helping"></i> Apply as Volunteer
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function loadCampaignDetails() {
+  const stored = localStorage.getItem('selectedCampaign');
+  if (stored) {
+    const campaign = JSON.parse(stored);
+    renderCampaignDetails(campaign);
+    localStorage.removeItem('selectedCampaign');
+  } else {
+    // Default to first campaign
+    renderCampaignDetails(campaignsData[0]);
+  }
+}
+
+function generateVolunteerAvatars(count) {
+  let avatars = '';
+  for (let i = 0; i < Math.min(count, 8); i++) {
+    avatars += `<img src="https://randomuser.me/api/portraits/${i % 2 === 0 ? 'women' : 'men'}/${i + 20}.jpg" class="volunteer-avatar" alt="Volunteer">`;
+  }
+  if (count > 8) {
+    avatars += `<div class="volunteer-avatar" style="background: var(--primary); color: white; display: inline-flex; align-items: center; justify-content: center;">+${count - 8}</div>`;
+  }
+  return avatars;
+}
+
+// Admin Dashboard Functions
+function initAdminDashboard() {
+  // Tab switching
+  const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
+  const views = ['dashboard', 'campaigns', 'donations', 'volunteers', 'users', 'reports'];
+  
+  navItems.forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      const viewName = item.dataset.view;
+      if (viewName) {
+        navItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+        
+        views.forEach(view => {
+          const viewEl = document.getElementById(`${view}View`);
+          if (viewEl) viewEl.classList.remove('active');
+        });
+        
+        const activeView = document.getElementById(`${viewName}View`);
+        if (activeView) activeView.classList.add('active');
+      }
+    });
+  });
+  
+  // Load tables
+  const campaignsTable = document.getElementById('campaignsTable');
+  if (campaignsTable) {
+    campaignsTable.innerHTML = campaignsData.map(c => `
+      <tr>
+        <td><strong>${c.title}</strong><br><small style="color: var(--gray-500);">${c.category}</small></td>
+        <td>${c.creator}</td>
+        <td>$${c.goal.toLocaleString()}</td>
+        <td>$${c.current.toLocaleString()}</td>
+        <td>
+          <div class="progress-bar" style="width: 100px;">
+            <div class="progress-fill" style="width: ${(c.current / c.goal) * 100}%"></div>
+          </div>
+          <span style="font-size: 0.75rem;">${Math.round((c.current / c.goal) * 100)}%</span>
+        </td>
+        <td><span class="status-badge approved">Active</span></td>
+        <td class="action-buttons">
+          <button class="action-btn" onclick="showToast('Campaign approved')">Approve</button>
+          <button class="action-btn" style="color: var(--danger);" onclick="showToast('Campaign deleted (demo)')">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  const usersTable = document.getElementById('usersTable');
+  if (usersTable) {
+    usersTable.innerHTML = fakeUsers.map(u => `
+      <tr>
+        <td>${u.name}</td>
+        <td>${u.email}</td>
+        <td><span class="status-badge ${u.role === 'Creator' ? 'pending' : 'approved'}">${u.role}</span></td>
+        <td><span class="status-badge ${u.status === 'Active' ? 'approved' : 'pending'}">${u.status}</span></td>
+        <td>${u.joined}</td>
+        <td class="action-buttons">
+          <button class="action-btn" onclick="showToast('User action simulated')">Edit</button>
+        </td>
+      </tr>
+    `).join('');
+  }
+  
+  const volunteersTable = document.getElementById('volunteersTable');
+  if (volunteersTable) {
+    volunteersTable.innerHTML = fakeVolunteers.map(v => `
+      <tr>
+        <td>${v.name}</td>
+        <td>${v.email}</td>
+        <td>${v.campaign}</td>
+        <td>${v.joined}</td>
+        <td>${v.hours} hrs</td>
+        <td><span class="status-badge ${v.status === 'Active' ? 'approved' : 'pending'}">${v.status}</span></td>
+      </tr>
+    `).join('');
+  }
+}
+
+function generateChartBars() {
+  const chartContainer = document.getElementById('donationChart');
+  if (!chartContainer) return;
+  
+  const monthlyData = [45, 62, 58, 78, 92, 108];
+  const months = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  chartContainer.innerHTML = monthlyData.map((value, index) => `
+    <div class="bar-container">
+      <div class="bar" style="height: ${value}px;"></div>
+      <span class="bar-label">${months[index]}</span>
+    </div>
+  `).join('');
+}
+
+function loadTopCampaigns() {
+  const container = document.getElementById('topCampaigns');
+  if (!container) return;
+  
+  const sorted = [...campaignsData].sort((a, b) => b.current - a.current).slice(0, 5);
+  container.innerHTML = sorted.map(c => `
+    <div class="top-campaign-item">
+      <div class="campaign-info">
+        <h4>${c.title}</h4>
+        <span>${c.category}</span>
+      </div>
+      <div class="campaign-amount">$${c.current.toLocaleString()}</div>
+    </div>
+  `).join('');
+}
+
+function loadActivityTimeline() {
+  const container = document.getElementById('activityTimeline');
+  if (!container) return;
+  
+  const activities = [
+    { user: "Emma Watson", action: "donated $500 to", campaign: "Digital Classrooms", time: "2 minutes ago" },
+    { user: "James Wilson", action: "volunteered for", campaign: "Clean Water Wells", time: "15 minutes ago" },
+    { user: "Lisa Chen", action: "created new campaign", campaign: "Ocean Cleanup", time: "1 hour ago" },
+    { user: "Mohammed Al-Rashid", action: "donated $1,000 to", campaign: "Emergency Medical", time: "3 hours ago" }
+  ];
+  
+  container.innerHTML = activities.map(a => `
+    <div class="top-campaign-item">
+      <div class="campaign-info">
+        <strong>${a.user}</strong> ${a.action} <strong>${a.campaign}</strong>
+        <span style="display: block; font-size: 0.75rem;">${a.time}</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Volunteer Functions
+function initVolunteerForm() {
+  const form = document.getElementById('volunteerForm');
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      document.getElementById('successModal').style.display = 'flex';
+      showToast('Volunteer application submitted successfully!');
+      form.reset();
+    });
+  }
+}
+
+function loadCampaignSelectList() {
+  const container = document.getElementById('campaignSelectList');
+  if (!container) return;
+  
+  container.innerHTML = campaignsData.map(c => `
+    <div class="campaign-option" data-id="${c.id}" onclick="selectCampaign(${c.id}, this)">
+      <strong>${c.title}</strong>
+      <div style="font-size: 0.875rem; color: var(--gray-500);">${c.volunteers} volunteers needed</div>
+    </div>
+  `).join('');
+}
+
+let selectedCampaignId = null;
+
+function selectCampaign(id, element) {
+  selectedCampaignId = id;
+  document.querySelectorAll('.campaign-option').forEach(opt => opt.classList.remove('selected'));
+  element.classList.add('selected');
+}
+
+function openVolunteerModal(campaignId) {
+  const modal = document.getElementById('volunteerModal');
+  if (modal) {
+    modal.style.display = 'flex';
+    if (campaignId) {
+      const campaign = campaignsData.find(c => c.id === campaignId);
+      if (campaign) {
+        // Pre-fill campaign info in modal if needed
+      }
+    }
+  }
+}
+
+function openDonateModal(campaignId) {
+  const modal = document.getElementById('donateModal');
+  if (modal) {
+    modal.style.display = 'flex';
+  }
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.style.display = 'none';
+}
+
+function closeSuccessModal() {
+  const modal = document.getElementById('successModal');
+  if (modal) modal.style.display = 'none';
+  window.location.href = 'index.html';
+}
+
+// Auth Forms
+function initAuthForms() {
+  const loginForm = document.getElementById('loginForm');
+  if (loginForm) {
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Welcome back! Redirecting to dashboard...');
+      setTimeout(() => {
+        window.location.href = 'admin-dashboard.html';
+      }, 1500);
+    });
+  }
+  
+  const registerForm = document.getElementById('registerForm');
+  if (registerForm) {
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Account created successfully!');
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1500);
+    });
+  }
+}
+
+function togglePassword() {
+  const passwordInput = document.getElementById('password');
+  if (passwordInput) {
+    const type = passwordInput.type === 'password' ? 'text' : 'password';
+    passwordInput.type = type;
+    const icon = document.querySelector('.toggle-password');
+    if (icon) icon.classList.toggle('fa-eye-slash');
+    if (icon) icon.classList.toggle('fa-eye');
+  }
+}
+
+// Toast Notifications
+function showToast(message, type = 'success') {
+  const container = document.getElementById('toastContainer');
+  if (!container) return;
+  
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `
+    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+    <span>${message}</span>
+  `;
+  container.appendChild(toast);
+  
+  setTimeout(() => {
+    toast.style.animation = 'slideInRight 0.3s reverse';
+    setTimeout(() => toast.remove(), 300);
+  }, 3000);
+}
+
+// Skeleton Loader
+function showSkeleton() {
+  const skeleton = document.getElementById('skeletonLoader');
+  if (skeleton) skeleton.style.display = 'grid';
+  const grid = document.getElementById('campaignsGrid');
+  if (grid) grid.style.display = 'none';
+}
+
+function hideSkeleton() {
+  const skeleton = document.getElementById('skeletonLoader');
+  if (skeleton) skeleton.style.display = 'none';
+  const grid = document.getElementById('campaignsGrid');
+  if (grid) grid.style.display = 'grid';
+}
+
+// Donation amount buttons
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('amount-btn') && !e.target.classList.contains('custom')) {
+    const amount = e.target.dataset.amount;
+    showToast(`You selected $${amount} donation amount`);
+  }
+});
+
+// Export for global use
+window.viewCampaign = viewCampaign;
+window.openVolunteerModal = openVolunteerModal;
+window.openDonateModal = openDonateModal;
+window.closeModal = closeModal;
+window.closeSuccessModal = closeSuccessModal;
+window.showToast = showToast;
+window.togglePassword = togglePassword;
+window.selectCampaign = selectCampaign;
+
+// ========== PROFILE PAGE FUNCTIONS ==========
+
+// Recent Activity Data
+const recentActivities = [
+  { type: 'donation', text: 'You donated $500 to "Digital Classrooms for Rural Kenya"', time: '2 hours ago', icon: 'fa-heart' },
+  { type: 'volunteer', text: 'You volunteered for "Clean Water Wells for 50 Villages"', time: '2 days ago', icon: 'fa-hands-helping' },
+  { type: 'badge', text: 'You earned the "Top Donor" badge', time: '5 days ago', icon: 'fa-trophy' },
+  { type: 'share', text: 'You shared "Ocean Plastic Cleanup Initiative"', time: '1 week ago', icon: 'fa-share-alt' }
+];
+
+// Donation History Data
+const donationHistory = [
+  { campaign: 'Digital Classrooms for Rural Kenya', amount: 500, date: '2024-02-15', status: 'Completed' },
+  { campaign: 'Clean Water Wells for 50 Villages', amount: 250, date: '2024-01-20', status: 'Completed' },
+  { campaign: 'Amazon Rainforest Protection', amount: 1000, date: '2024-01-05', status: 'Completed' },
+  { campaign: 'Girls\' Education Scholarship Fund', amount: 200, date: '2023-12-10', status: 'Completed' }
+];
+
+// Volunteer History Data
+const volunteerHistory = [
+  { campaign: 'Clean Water Wells for 50 Villages', hours: 24, date: '2024-02-01', role: 'Field Coordinator' },
+  { campaign: 'Education For All', hours: 32, date: '2024-01-15', role: 'Teacher Assistant' },
+  { campaign: 'Forest Protection', hours: 18, date: '2023-12-05', role: 'Tree Planter' }
+];
+
+// Supported Campaigns Data
+const supportedCampaigns = [
+  { title: 'Digital Classrooms for Rural Kenya', donated: 500, status: 'Active' },
+  { title: 'Clean Water Wells for 50 Villages', donated: 250, status: 'Active' },
+  { title: 'Amazon Rainforest Protection', donated: 1000, status: 'Completed' }
+];
+
+// Initialize Profile Page
+function initProfilePage() {
+  if (!document.querySelector('.profile-container')) return;
+  
+  renderRecentActivity();
+  renderDonationHistory();
+  renderVolunteerHistory();
+  renderSupportedCampaigns();
+  setupProfileTabs();
+  
+  const settingsForm = document.getElementById('profileSettingsForm');
+  if (settingsForm) {
+    settingsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Profile updated successfully!');
+    });
+  }
+}
+
+function renderRecentActivity() {
+  const container = document.getElementById('recentActivity');
+  if (!container) return;
+  
+  container.innerHTML = recentActivities.map(activity => `
+    <div class="feed-item">
+      <div class="feed-icon"><i class="fas ${activity.icon}"></i></div>
+      <div class="feed-content">
+        <div class="feed-text">${activity.text}</div>
+        <div class="feed-time">${activity.time}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderDonationHistory() {
+  const container = document.getElementById('donationsTable');
+  if (!container) return;
+  
+  container.innerHTML = `
+    <table>
+      <thead>
+        <tr><th>Campaign</th><th>Amount</th><th>Date</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        ${donationHistory.map(d => `
+          <tr>
+            <td>${d.campaign}</td>
+            <td><strong>$${d.amount}</strong></td>
+            <td>${d.date}</td>
+            <td><span class="status-badge approved">${d.status}</span></td>
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function renderVolunteerHistory() {
+  const container = document.getElementById('volunteerHistoryList');
+  if (!container) return;
+  
+  container.innerHTML = volunteerHistory.map(v => `
+    <div class="volunteer-card" style="background: var(--gray-50); padding: 1rem; border-radius: var(--radius-lg); margin-bottom: 1rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <strong>${v.campaign}</strong>
+          <div style="font-size: 0.875rem; color: var(--gray-500);">Role: ${v.role}</div>
+        </div>
+        <div style="text-align: right;">
+          <div><strong>${v.hours} hours</strong></div>
+          <div style="font-size: 0.75rem; color: var(--gray-400);">${v.date}</div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderSupportedCampaigns() {
+  const container = document.getElementById('supportedCampaignsList');
+  if (!container) return;
+  
+  container.innerHTML = supportedCampaigns.map(c => `
+    <div class="campaign-support-item" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem; border-bottom: 1px solid var(--gray-100);">
+      <div>
+        <strong>${c.title}</strong>
+        <div style="font-size: 0.875rem; color: var(--gray-500);">Donated: $${c.donated}</div>
+      </div>
+      <span class="status-badge ${c.status === 'Active' ? 'approved' : ''}">${c.status}</span>
+    </div>
+  `).join('');
+}
+
+function setupProfileTabs() {
+  const tabBtns = document.querySelectorAll('.profile-tabs .tab-btn');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      document.querySelectorAll('.profile-container .tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      const activeTab = document.getElementById(`${tabId}Tab`);
+      if (activeTab) activeTab.classList.add('active');
+    });
+  });
+}
+
+// ========== ORGANIZATION PAGE FUNCTIONS ==========
+
+// Organization Campaigns
+let orgCampaigns = [
+  { id: 1, title: 'Build a School in Kenya', category: 'Education', goal: 150000, current: 89200, status: 'active', image: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400', created: '2024-01-15' },
+  { id: 2, title: 'Teacher Training Program', category: 'Education', goal: 75000, current: 45000, status: 'active', image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400', created: '2024-02-01' },
+  { id: 3, title: 'Scholarship Fund 2024', category: 'Education', goal: 200000, current: 200000, status: 'completed', image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400', created: '2023-06-01' }
+];
+
+// Team Members
+const teamMembers = [
+  { name: 'Dr. James Mwangi', role: 'Executive Director', email: 'james@educationafrica.org', avatar: 'https://randomuser.me/api/portraits/men/32.jpg' },
+  { name: 'Sarah Johnson', role: 'Program Manager', email: 'sarah@educationafrica.org', avatar: 'https://randomuser.me/api/portraits/women/68.jpg' },
+  { name: 'David Ochieng', role: 'Field Coordinator', email: 'david@educationafrica.org', avatar: 'https://randomuser.me/api/portraits/men/45.jpg' }
+];
+
+// Top Supporters
+const topSupporters = [
+  { name: 'Emma Watson', amount: 5000, avatar: 'https://randomuser.me/api/portraits/women/1.jpg' },
+  { name: 'Bill Gates', amount: 25000, avatar: 'https://randomuser.me/api/portraits/men/2.jpg' },
+  { name: 'Oprah Winfrey', amount: 15000, avatar: 'https://randomuser.me/api/portraits/women/3.jpg' }
+];
+
+function initOrganizationPage() {
+  if (!document.querySelector('.org-container')) return;
+  
+  renderOrgCampaigns();
+  renderTeamMembers();
+  renderSupporters();
+  renderTopPerformingCampaigns();
+  renderOrgDonationChart();
+  setupOrgTabs();
+  setupOrgFilters();
+  
+  const settingsForm = document.getElementById('orgSettingsForm');
+  if (settingsForm) {
+    settingsForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Organization settings saved!');
+    });
+  }
+}
+
+function renderOrgCampaigns(filter = 'all', search = '') {
+  const container = document.getElementById('orgCampaignsList');
+  if (!container) return;
+  
+  let filtered = orgCampaigns.filter(c => filter === 'all' || c.status === filter);
+  if (search) {
+    filtered = filtered.filter(c => c.title.toLowerCase().includes(search.toLowerCase()));
+  }
+  
+  container.innerHTML = filtered.map(campaign => `
+    <div class="org-campaign-card">
+      <div class="org-campaign-image" style="background-image: url('${campaign.image}')">
+        <span class="campaign-status status-${campaign.status}">${campaign.status.toUpperCase()}</span>
+      </div>
+      <div class="org-campaign-content">
+        <h4 class="org-campaign-title">${campaign.title}</h4>
+        <div class="progress-section">
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${(campaign.current / campaign.goal) * 100}%"></div>
+          </div>
+          <div class="campaign-stats">
+            <span>$${campaign.current.toLocaleString()} raised</span>
+            <span>of $${campaign.goal.toLocaleString()}</span>
+          </div>
+        </div>
+        <div class="org-campaign-actions">
+          <button class="btn-secondary btn-sm" onclick="editOrgCampaign(${campaign.id})">Edit</button>
+          <button class="btn-outline btn-sm" onclick="viewCampaign(${campaign.id})">View</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function setupOrgFilters() {
+  const searchInput = document.getElementById('orgCampaignSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      const filter = document.getElementById('campaignStatusFilter')?.value || 'all';
+      renderOrgCampaigns(filter, e.target.value);
+    });
+  }
+  
+  const statusFilter = document.getElementById('campaignStatusFilter');
+  if (statusFilter) {
+    statusFilter.addEventListener('change', (e) => {
+      const search = document.getElementById('orgCampaignSearch')?.value || '';
+      renderOrgCampaigns(e.target.value, search);
+    });
+  }
+}
+
+function renderTeamMembers() {
+  const container = document.getElementById('teamMembersList');
+  if (!container) return;
+  
+  container.innerHTML = teamMembers.map(member => `
+    <div class="team-card">
+      <img src="${member.avatar}" alt="${member.name}" class="team-avatar">
+      <h4 class="team-name">${member.name}</h4>
+      <div class="team-role">${member.role}</div>
+      <div class="team-email">${member.email}</div>
+    </div>
+  `).join('');
+}
+
+function renderSupporters() {
+  const container = document.getElementById('supportersList');
+  if (!container) return;
+  
+  container.innerHTML = topSupporters.map(supporter => `
+    <div class="supporter-card">
+      <img src="${supporter.avatar}" alt="${supporter.name}" class="supporter-avatar">
+      <div class="supporter-info">
+        <div class="supporter-name">${supporter.name}</div>
+        <div class="supporter-amount">$${supporter.amount.toLocaleString()}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderTopPerformingCampaigns() {
+  const container = document.getElementById('topPerformingCampaigns');
+  if (!container) return;
+  
+  const topCampaigns = [...orgCampaigns].sort((a, b) => b.current - a.current);
+  container.innerHTML = topCampaigns.map(c => `
+    <div class="top-campaign-item">
+      <div class="campaign-info">
+        <h4>${c.title}</h4>
+        <span>${Math.round((c.current / c.goal) * 100)}% funded</span>
+      </div>
+      <div class="campaign-amount">$${c.current.toLocaleString()}</div>
+    </div>
+  `).join('');
+}
+
+function renderOrgDonationChart() {
+  const container = document.getElementById('orgDonationChart');
+  if (!container) return;
+  
+  const monthlyData = [45, 62, 78, 92, 108, 145];
+  const months = ['Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+  container.innerHTML = monthlyData.map((value, index) => `
+    <div class="bar-container" style="flex: 1;">
+      <div class="bar" style="height: ${value}px; background: linear-gradient(180deg, var(--primary), var(--secondary));"></div>
+      <span class="bar-label">${months[index]}</span>
+    </div>
+  `).join('');
+}
+
+function setupOrgTabs() {
+  const tabBtns = document.querySelectorAll('.org-tabs .tab-btn');
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.dataset.tab;
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      document.querySelectorAll('.org-container .tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      
+      const activeTab = document.getElementById(`${tabId}Tab`);
+      if (activeTab) activeTab.classList.add('active');
+    });
+  });
+}
+
+function createNewCampaign() {
+  const modal = document.getElementById('createCampaignModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function editOrgCampaign(campaignId) {
+  const campaign = orgCampaigns.find(c => c.id === campaignId);
+  if (!campaign) return;
+  
+  document.getElementById('editCampaignId').value = campaign.id;
+  document.getElementById('editCampaignTitle').value = campaign.title;
+  document.getElementById('editCampaignCategory').value = campaign.category;
+  document.getElementById('editCampaignDescription').value = campaign.description || '';
+  document.getElementById('editCampaignGoal').value = campaign.goal;
+  
+  const modal = document.getElementById('editCampaignModal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function deleteCampaign() {
+  const id = document.getElementById('editCampaignId').value;
+  if (confirm('Are you sure you want to delete this campaign?')) {
+    orgCampaigns = orgCampaigns.filter(c => c.id !== parseInt(id));
+    renderOrgCampaigns();
+    closeModal('editCampaignModal');
+    showToast('Campaign deleted successfully');
+  }
+}
+
+function inviteTeamMember() {
+  showToast('Invitation sent! (Demo)');
+}
+
+function editProfile() {
+  showToast('Profile edit mode (Demo)');
+}
+
+function shareProfile() {
+  showToast('Profile link copied to clipboard!');
+}
+
+function editOrganization() {
+  showToast('Organization settings opened');
+}
+
+// New Campaign Form Submission
+const newCampaignForm = document.getElementById('newCampaignForm');
+if (newCampaignForm) {
+  newCampaignForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newCampaign = {
+      id: orgCampaigns.length + 1,
+      title: document.getElementById('campaignTitle').value,
+      category: document.getElementById('campaignCategory').value,
+      goal: parseInt(document.getElementById('campaignGoal').value),
+      current: 0,
+      status: 'draft',
+      image: document.getElementById('campaignImage').value || 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400',
+      created: new Date().toISOString().split('T')[0]
+    };
+    orgCampaigns.push(newCampaign);
+    renderOrgCampaigns();
+    closeModal('createCampaignModal');
+    showToast('Campaign created successfully!');
+    newCampaignForm.reset();
+  });
+}
+
+// Edit Campaign Form Submission
+const editCampaignForm = document.getElementById('editCampaignForm');
+if (editCampaignForm) {
+  editCampaignForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const id = parseInt(document.getElementById('editCampaignId').value);
+    const index = orgCampaigns.findIndex(c => c.id === id);
+    if (index !== -1) {
+      orgCampaigns[index] = {
+        ...orgCampaigns[index],
+        title: document.getElementById('editCampaignTitle').value,
+        category: document.getElementById('editCampaignCategory').value,
+        goal: parseInt(document.getElementById('editCampaignGoal').value)
+      };
+      renderOrgCampaigns();
+      closeModal('editCampaignModal');
+      showToast('Campaign updated successfully!');
+    }
+  });
+}
+
+// Initialize all new pages
+document.addEventListener('DOMContentLoaded', () => {
+  initProfilePage();
+  initOrganizationPage();
+});

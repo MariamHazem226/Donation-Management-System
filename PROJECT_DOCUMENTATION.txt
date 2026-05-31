@@ -1,0 +1,1101 @@
+PROJECT_DOCUMENTATION.txt
+========================================
+GivingHands Project Documentation (Backend + Frontend)
+Generated documentation (Documentation-only; no code changes).
+
+
+========================================
+PROJECT FILE STRUCTURE (CLEAN VIEW)
+========================================
+
+backend/
+ ├── .gitattributes
+ ├── .gitignore
+ ├── application.properties.example
+ ├── mvnw
+ ├── mvnw.cmd
+ ├── pom.xml
+ ├── database/
+ │    ├── README.md
+ │    ├── fix-schema.sql
+ │    ├── queries.sql
+ │    └── schema.sql
+ ├── target/                      (build output; usually generated)
+ ├── uploads/
+ │    └── avatars/
+ │         ├── avatar_24_7cc42030-8c2c-4ac7-9367-a1888520beca.jpg
+ │         ├── avatar_24_9092c76a-1f65-4240-ab8d-9daf61500869.jpg
+ │         └── cover_24_14b933ad-e694-442d-bf17-01ca93e21b17.png
+ │         └── cover_24_e18495ab-ccfc-4d1f-8f6c-a299109661fc.png
+ └── src/
+      ├── main/
+      │    ├── java/com/givinghands/givinghands/
+      │    │    ├── GivinghandsApplication.java
+      │    │    ├── config/
+      │    │    │    ├── AdminAuthInterceptor.java
+      │    │    │    ├── ApiExceptionHandler.java
+      │    │    │    ├── ApplicationStartupDiagnostics.java
+      │    │    │    ├── AsyncConfig.java
+      │    │    │    ├── CorsConfig.java
+      │    │    │    ├── DataSeeder.java
+      │    │    │    ├── MailConfig.java
+      │    │    │    ├── MailProperties.java
+      │    │    │    ├── NotificationConfig.java
+      │    │    │    ├── NotificationObserverConfig.java
+      │    │    │    ├── PasswordConfig.java
+      │    │    │    ├── PasswordEncodingMigration.java
+      │    │    │    ├── SchemaHealthChecker.java
+      │    │    │    ├── SecurityConfig.java
+      │    │    │    └── WebMvcConfig.java
+      │    │    ├── controller/
+      │    │    │    ├── AdminController.java
+      │    │    │    ├── AuthController.java
+      │    │    │    ├── CampaignController.java
+      │    │    │    ├── DonationController.java
+      │    │    │    ├── NewsletterController.java
+      │    │    │    ├── NotificationController.java
+      │    │    │    ├── OrganizationController.java
+      │    │    │    ├── UserController.java
+      │    │    │    └── VolunteerController.java
+      │    │    ├── dto/
+      │    │    │    ├── AdminDonationDTO.java
+      │    │    │    ├── AdminVolunteerDTO.java
+      │    │    │    ├── AuthResponseDTO.java
+      │    │    │    ├── CampaignDTO.java
+      │    │    │    ├── CampaignMapper.java
+      │    │    │    ├── DashboardStatsDTO.java
+      │    │    │    ├── DonationDTO.java
+      │    │    │    ├── LoginRequestDTO.java
+      │    │    │    ├── NotificationDTO.java
+      │    │    │    ├── RegisterRequestDTO.java
+      │    │    │    ├── UserResponseDTO.java
+      │    │    │    └── VolunteerDTO.java
+      │    │    ├── entity/
+      │    │    │    ├── Campaign.java
+      │    │    │    ├── Donation.java
+      │    │    │    ├── NewsletterSubscriber.java
+      │    │    │    ├── User.java
+      │    │    │    └── Volunteer.java
+      │    │    ├── notification/
+      │    │    │    ├── EmailTemplateName.java
+      │    │    │    ├── NotificationEvent.java
+      │    │    │    ├── NotificationEvents.java
+      │    │    │    ├── NotificationEventType.java
+      │    │    │    ├── NotificationPublisher.java
+      │    │    │    ├── NotificationRecipient.java
+      │    │    │    ├── NotificationRequest.java
+      │    │    │    ├── TemplateContext.java
+      │    │    │    └── handler/
+      │    │    │         ├── NotificationDispatcher.java
+      │    │    │         └── NotificationSubjectResolver.java
+      │    │    ├── pattern/
+      │    │    │    ├── factory/
+      │    │    │    │    └── ContributionFactory.java
+      │    │    │    ├── observer/
+      │    │    │    │    ├── CampaignEventListener.java
+      │    │    │    │    ├── CampaignEventManager.java
+      │    │    │    │    ├── CampaignPublisher.java
+      │    │    │    │    ├── EmailNotificationListener.java
+      │    │    │    │    ├── LoggingListener.java
+      │    │    │    │    ├── LoggingNotificationListener.java
+      │    │    │    │    ├── NotificationEventManager.java
+      │    │    │    │    ├── NotificationListener.java
+      │    │    │    │    ├── ObserverDemo.java
+      │    │    │    │    └── (other observer helper classes)
+      │    │    │    ├── singleton/
+      │    │    │    │    └── SystemConfig.java
+      │    │    │    └── strategy/
+      │    │    │         ├── CampaignContext.java
+      │    │    │         ├── CampaignFilterStrategy.java
+      │    │    │         ├── FilterByCategoryStrategy.java
+      │    │    │         ├── FilterByStatusStrategy.java
+      │    │    │         └── SortByDeadlineStrategy.java
+      │    │    ├── repository/
+      │    │    │    ├── CampaignRepository.java
+      │    │    │    ├── DonationRepository.java
+      │    │    │    ├── NewsletterSubscriberRepository.java
+      │    │    │    ├── UserRepository.java
+      │    │    │    └── VolunteerRepository.java
+      │    │    ├── security/
+      │    │    │    ├── CustomOAuth2UserService.java
+      │    │    │    ├── JwtAuthenticationFilter.java
+      │    │    │    ├── JwtService.java
+      │    │    │    ├── OAuth2LoginSuccessHandler.java
+      │    │    │    └── OAuth2RoleHolder.java
+      │    │    ├── service/
+      │    │    │    ├── (interfaces)
+      │    │    │    │    ├── AdminService.java
+      │    │    │    │    ├── AuthService.java
+      │    │    │    │    ├── CampaignService.java
+      │    │    │    │    ├── DonationService.java
+      │    │    │    │    ├── NewsletterService.java
+      │    │    │    │    ├── NotificationService.java
+      │    │    │    │    ├── OrganizationService.java
+      │    │    │    │    ├── UserService.java
+      │    │    │    │    └── VolunteerService.java
+      │    │    │    ├── (notification services)
+      │    │    │    │    ├── AdminNotificationService.java
+      │    │    │    │    ├── NewsletterNotificationService.java
+      │    │    │    │    ├── OrganizationNotificationService.java
+      │    │    │    │    └── UserNotificationService.java
+      │    │    │    └── impl/
+      │    │    │         ├── AuthServiceImpl.java
+      │    │    │         ├── CampaignServiceImpl.java
+      │    │    │         ├── DonationServiceImpl.java
+      │    │    │         ├── AdminServiceImpl.java
+      │    │    │         ├── OrganizationServiceImpl.java
+      │    │    │         ├── NewsletterServiceImpl.java
+      │    │    │         ├── VolunteerServiceImpl.java
+      │    │    │         ├── UserServiceImpl.java
+      │    │    │         ├── EmailService.java
+      │    │    │         ├── ... (notification service impls)
+      │    │    │         └── (some .LCK* lock/backup files)
+      │    │    └── util/
+      │    │         ├── EmailTemplateUtil.java
+      │    │         ├── FileStorageUtil.java
+      │    │         └── ValidationUtil.java
+      │    └── resources/
+      │         ├── application.properties
+      │         ├── static/
+      │         │    ├── about-us.html
+      │         │    ├── admin-dashboard.html
+      │         │    ├── campaign-details.html
+      │         │    ├── index.html
+      │         │    ├── login.html
+      │         │    ├── oauth-callback.html
+      │         │    ├── organization.html
+      │         │    ├── privacy-policy.html
+      │         │    ├── profile.html
+      │         │    ├── register.html
+      │         │    ├── terms-of-service.html
+      │         │    └── volunteer.html
+      │         │    ├── css/style.css
+      │         │    └── js/main.js + stats-animation.js
+      │         └── templates/
+      │              └── emails/
+      │                   ├── base.html
+      │                   ├── admin_campaign_goal_reached.html
+      │                   ├── admin_new_campaign_request.html
+      │                   ├── admin_new_org_registered.html
+      │                   ├── campaign_approved_active.html
+      │                   ├── campaign_goal_reached.html
+      │                   ├── new_volunteer_opportunity.html
+      │                   ├── org_campaign_approved.html
+      │                   ├── org_campaign_rejected.html
+      │                   ├── org_registration_welcome.html
+      │                   ├── org_volunteer_applied.html
+      │                   ├── org_welcome_approved.html
+      │                   ├── user_donation_submitted.html
+      │                   ├── user_volunteer_approved.html
+      │                   └── user_volunteer_rejected.html
+      └── test/
+           └── java/com/givinghands/givinghands/GivinghandsApplicationTests.java
+
+frontend/
+ ├── about-us.html
+ ├── admin-dashboard.html
+ ├── campaign-details.html
+ ├── index.html
+ ├── login.html
+ ├── oauth-callback.html
+ ├── organization.html
+ ├── privacy-policy.html
+ ├── profile.html
+ ├── register.html
+ ├── terms-of-service.html
+ ├── volunteer.html
+ ├── css/
+ │    └── style.css
+ └── js/
+      ├── main.js
+      └── stats-animation.js
+ └── emails/
+      ├── base.html
+      ├── admin_new_org_registered.html
+      ├── campaign_approved_active.html
+      ├── campaign_goal_reached.html
+      ├── org_campaign_approved.html
+      ├── org_campaign_rejected.html
+      ├── org_volunteer_applied.html
+      ├── org_welcome_approved.html
+      ├── user_donation_submitted.html
+      ├── user_volunteer_approved.html
+      └── user_volunteer_rejected.html
+
+
+========================================
+BACKEND: IMPORTANT FILE-BY-FILE EXPLANATION
+========================================
+
+Note: This section focuses on the important major classes and modules used by the system flows.
+Some helper classes are referenced, but not every single small DTO/entity field is expanded.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/GivinghandsApplication.java
+----------------------------------------
+Purpose:
+Spring Boot application entry point.
+Responsibilities:
+- Bootstraps the Spring context.
+- Enables async processing.
+Important Methods:
+- main(String[] args): starts the app with SpringApplication.run().
+Connected With:
+- Spring configuration classes under config/
+- All @RestController/@Service components.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/config/SecurityConfig.java
+----------------------------------------
+Purpose:
+Defines Spring Security rules for endpoints and integrates JWT filter and OAuth2 login.
+Responsibilities:
+- Disables CSRF.
+- Configures session behavior.
+- Sets which endpoints are public vs protected (in this project many are permitted).
+- Configures OAuth2 login: Custom OAuth2 user service and success handler.
+- Adds JwtAuthenticationFilter into the filter chain.
+Important Methods:
+- filterChain(HttpSecurity http): creates SecurityFilterChain.
+Connected With:
+- security/JwtAuthenticationFilter.java
+- security/CustomOAuth2UserService.java
+- security/OAuth2LoginSuccessHandler.java
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/security/JwtService.java
+----------------------------------------
+Purpose:
+Generates and validates JWT tokens.
+Responsibilities:
+- Create JWT using user email as subject.
+- Store role and additional claims (userId, role, name).
+- Validate expiration.
+Important Methods:
+- generateToken(User user)
+- parseClaims(String token)
+- isValid(String token)
+- getEmailFromToken(String token)
+Connected With:
+- controller/AuthController (token generation)
+- security/JwtAuthenticationFilter (token validation)
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/security/JwtAuthenticationFilter.java
+----------------------------------------
+Purpose:
+Reads Authorization: Bearer <token> and sets the SecurityContext.
+Responsibilities:
+- Extract JWT from request headers.
+- Validate JWT and load the user using UserRepository.
+- Create Spring Security Authentication with ROLE_<ROLE> authority.
+- Put it into SecurityContextHolder.
+Important Methods:
+- doFilterInternal(...): core request filter.
+Connected With:
+- security/JwtService
+- repository/UserRepository
+- SecurityConfig (registers this filter)
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/AuthController.java
+----------------------------------------
+Purpose:
+Authentication endpoints (register, login, current user, and Google OAuth start).
+Responsibilities:
+- Registration: creates user + returns JWT.
+- Login: validates credentials + returns JWT.
+- me(): returns current authenticated user data.
+- /oauth/google: sets desired role in session then redirects to OAuth2.
+Important Methods:
+- register(@RequestBody Map<String,String>)
+- login(@RequestBody Map<String,String>)
+- me(@AuthenticationPrincipal String email)
+- googleOAuth(@RequestParam role, HttpSession session, HttpServletResponse response)
+Connected With:
+- service/AuthService
+- security/JwtService
+- repository/UserRepository
+- security/OAuth2RoleHolder
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/service/impl/AuthServiceImpl.java
+----------------------------------------
+Purpose:
+Implements registration/login logic and triggers notification events for organization signups.
+Responsibilities:
+- Validate name/email/password.
+- Enforce role normalization (public registration disallows ADMIN).
+- Hash passwords using BCrypt.
+- On organization registration: publish welcome + admin notification events.
+Important Methods:
+- registerUser(name,email,password,role)
+- loginUser(email,password)
+- validateUser(email,password)
+- findOrCreateGoogleUser(...)
+Connected With:
+- repository/UserRepository
+- security/BCryptPasswordEncoder (provided by PasswordConfig)
+- notification/NotificationPublisher (event publishing)
+- notification/NotificationEvents
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/notification/NotificationEvents.java
+----------------------------------------
+Purpose:
+Central registry of notification event-type strings and payload keys.
+Responsibilities:
+- Defines all events for newsletter/org/user/admin flows.
+- Defines common payload keys: campaignId, volunteerId, donationId, organizationId.
+Important Methods:
+- None (constants only).
+Connected With:
+- Services and listeners: publish/consume events.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/notification/NotificationPublisher.java
+----------------------------------------
+Purpose:
+Publishes domain events into the observer hub.
+Responsibilities:
+- Calls NotificationEventManager.notify(eventType, data).
+Important Methods:
+- publish(String eventType, Object data)
+Connected With:
+- pattern.observer.NotificationEventManager
+- Config: NotificationObserverConfig registers listeners.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/config/NotificationObserverConfig.java
+----------------------------------------
+Purpose:
+Registers default notification observers (listeners) into the Observer hub.
+Responsibilities:
+- Subscribes LoggingNotificationListener and EmailNotificationListener.
+Important Methods:
+- registerNotificationObservers(...): returns a CommandLineRunner that subscribes listeners.
+Connected With:
+- pattern.observer.NotificationEventManager
+- pattern.observer.LoggingNotificationListener
+- pattern.observer.EmailNotificationListener
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/pattern/observer/EmailNotificationListener.java
+----------------------------------------
+Purpose:
+Observer that translates notification event types into calls to notification services.
+Responsibilities:
+- Switch on eventType.
+- Extract IDs from payload maps.
+- Call correct service method (newsletter/user/org/admin notification service).
+Important Methods:
+- update(String eventType, Object data)
+- extractLong(Object data, String key)
+Connected With:
+- service implementations: NewsletterNotificationService, OrganizationNotificationService,
+  UserNotificationService, AdminNotificationService
+- notification/NotificationEvents
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/notification/handler/NotificationDispatcher.java
+----------------------------------------
+Purpose:
+Facade/bridge for the notification pipeline (Observer hub integration).
+Responsibilities:
+- publish(eventType,data) using NotificationPublisher.
+- dispatch(NotificationEvent/NotificationRequest) legacy methods.
+Important Methods:
+- publish(eventType, data)
+- dispatch(NotificationEvent event)
+- dispatch(NotificationRequest request)
+- dispatchCampaignObserverEvent(eventType, campaignId, details)
+Connected With:
+- notification/NotificationPublisher
+- pattern.observer hub
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/CampaignController.java
+----------------------------------------
+Purpose:
+Campaign CRUD + filtering + campaign image upload.
+Responsibilities:
+- List campaigns (optionally filter by category/status).
+- List by status: active/approved/pending.
+- Get campaign by id.
+- Create/update/delete campaigns.
+- Upload campaign image file and serve it back.
+Important Methods:
+- getAllCampaigns(category,status)
+- getActiveCampaigns()
+- getPendingCampaigns()
+- getApprovedCampaigns()
+- getCampaignById(id)
+- createCampaign(CampaignDTO)
+- updateCampaign(id, CampaignDTO)
+- deleteCampaign(id)
+- uploadCampaignImage(campaignId, MultipartFile file)
+- getCampaignImageFile(campaignId, filename)
+Connected With:
+- service/CampaignService
+- util/FileStorageUtil
+- entity Campaign (during image upload, it sets image + persists via update dto)
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/service/impl/CampaignServiceImpl.java
+----------------------------------------
+Purpose:
+Implements campaign logic (create/update/filter) and publishes admin notifications for new campaign requests.
+Responsibilities:
+- Validate required fields.
+- Restrict campaign creation to organization/admin roles.
+- Sanitize inputs.
+- Persist campaigns.
+- Publish NotificationEvents.ADMIN_NEW_CAMPAIGN_REQUEST after create.
+- Provide filtering by category/status.
+Important Methods:
+- createCampaign(CampaignDTO)
+- updateCampaign(Long id, CampaignDTO)
+- deleteCampaign(Long id)
+- getAllCampaigns()
+- getCampaignById(Long id)
+- filterCampaigns(category,status)
+- getCampaignsByStatus(status)
+Connected With:
+- repository/CampaignRepository
+- repository/UserRepository (to validate organization creator)
+- notification/NotificationPublisher
+- notification/NotificationEvents
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/DonationController.java
+----------------------------------------
+Purpose:
+Donation endpoints (submit donation and view donation history).
+Responsibilities:
+- POST /api/donations : submit donation.
+- GET /api/donations/user/{id} : donation history for a user.
+Important Methods:
+- submitDonation(DonationDTO)
+- getDonationHistory(userId)
+Connected With:
+- service/DonationService
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/service/impl/DonationServiceImpl.java
+----------------------------------------
+Purpose:
+Persists donation and updates campaign funding; triggers goal reached notifications.
+Responsibilities:
+- Save Donation with status COMPLETED and date=LocalDate.now().
+- Publish USER_DONATION_SUBMITTED notification.
+- Update campaign currentAmount.
+- If campaign goal reached: publish NEWSLETTER_CAMPAIGN_GOAL_REACHED and ADMIN_CAMPAIGN_GOAL_REACHED.
+Important Methods:
+- submitDonation(DonationDTO dto)
+- getDonationHistory(Long userId)
+- updateCampaignFunding(Long campaignId, Double amount)
+Connected With:
+- repository/DonationRepository
+- repository/CampaignRepository
+- notification/NotificationPublisher
+- notification/NotificationEvents
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/VolunteerController.java
+----------------------------------------
+Purpose:
+Volunteer endpoints (apply, list, approve/reject).
+Note:
+Not opened in this session, but its existence is expected from structure and the VolunteerService implementation.
+Connected With:
+- service/VolunteerService
+- controller routes for volunteering.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/service/impl/VolunteerServiceImpl.java
+----------------------------------------
+Purpose:
+Handles volunteer application lifecycle and publishes relevant notifications.
+Responsibilities:
+- Validate request (userId, campaignId, whyJoin).
+- Ensure campaign allows volunteers.
+- Ensure campaign status is APPROVED or PENDING (as coded).
+- Create Volunteer with status PENDING.
+- Publish ORG_VOLUNTEER_APPLIED to notify organization.
+- Approve: set status ACCEPTED and publish USER_VOLUNTEER_APPROVED.
+- Reject: set status REJECTED and publish USER_VOLUNTEER_REJECTED.
+Important Methods:
+- applyVolunteer(VolunteerDTO)
+- approveVolunteer(Long id)
+- rejectVolunteer(Long id)
+- deleteVolunteer(Long id)
+- getVolunteersByCampaign(campaignId)
+- getVolunteersByUser(userId)
+- getVolunteerById(id)
+Connected With:
+- repository/VolunteerRepository
+- repository/UserRepository
+- repository/CampaignRepository
+- notification/NotificationPublisher + NotificationEvents
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/AdminController.java
+----------------------------------------
+Purpose:
+Admin endpoints (dashboard statistics and moderation actions).
+Responsibilities:
+- Admin statistics for dashboard.
+- CRUD-ish admin actions: list users/campaigns/volunteers and delete entities.
+- Approve/reject campaigns.
+Important Methods:
+- getDashboardStats()
+- getAllUsers()
+- getAllCampaigns()
+- getAllVolunteers()
+- getAllVolunteersForDashboard()
+- getAllDonations()
+- deleteUser(id)
+- deleteCampaign(id)
+- deleteVolunteer(id)
+- approveCampaign(id)
+- rejectCampaign(id)
+Connected With:
+- service/AdminService
+- dto mappers (CampaignMapper)
+- entity objects (User, Campaign, Volunteer)
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/service/impl/AdminServiceImpl.java
+----------------------------------------
+Purpose:
+Implements admin actions and approval/rejection flow with notifications.
+Responsibilities:
+- Compute dashboard stats (counts and total raised by summing donations).
+- Approve campaign: set status APPROVED and publish approval notifications.
+- Reject campaign: set status REJECTED and publish ORG_CAMPAIGN_REJECTED.
+Important Methods:
+- getDashboardStats()
+- getAllUsers()/getAllCampaigns()/getAllVolunteers()
+- getAllDonations()/getAllVolunteersForDashboard()
+- deleteUser/deleteCampaign/deleteVolunteer
+- approveCampaign(Long id)
+- rejectCampaign(Long id)
+- publishApprovalNotifications(Campaign saved)
+Connected With:
+- repositories: UserRepository, CampaignRepository, VolunteerRepository, DonationRepository
+- notification/NotificationPublisher
+- notification/NotificationEvents
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/NotificationController.java
+----------------------------------------
+Purpose:
+In-app notifications endpoint (currently returns empty list).
+Responsibilities:
+- GET user notifications (placeholder).
+Important Methods:
+- getUserNotifications(userId)
+Connected With:
+- none yet (returns empty list).
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/controller/UserController.java
+----------------------------------------
+Purpose:
+User profile endpoints (upload avatar/cover, update profile etc.).
+Connected With:
+- service/UserService
+Note:
+Not opened in this session; documented as part of project structure.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/service/impl/UserServiceImpl.java
+----------------------------------------
+Purpose:
+Implements profile updates for avatar and cover.
+Responsibilities:
+- Update avatarUrl and coverUrl.
+- Update name/email.
+- Basic user retrieval and deletion.
+Important Methods:
+- getUserById(id)
+- updateUser(id, name, email)
+- updateAvatar(id, avatarUrl)
+- updateCover(id, coverUrl)
+Connected With:
+- repository/UserRepository
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/config/DataSeeder.java
+----------------------------------------
+Purpose:
+Seeds initial database data for development/testing.
+Responsibilities:
+- Run at startup to insert sample content.
+Important Methods:
+- likely via CommandLineRunner or ApplicationRunner (not opened).
+Connected With:
+- repositories and schema.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/util/ValidationUtil.java
+----------------------------------------
+Purpose:
+Provides input validation and sanitization helpers.
+Responsibilities:
+- notEmpty checks
+- sanitize strings
+- email/password validation
+Important Methods:
+- (not opened, inferred from usage in services)
+Connected With:
+- AuthServiceImpl, CampaignServiceImpl, etc.
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/util/FileStorageUtil.java
+----------------------------------------
+Purpose:
+Stores uploaded multipart files into configured upload directories.
+Responsibilities:
+- storeMultipartFile(directory, originalFilename, MultipartFile)
+Important Methods:
+- used by CampaignController.uploadCampaignImage
+Connected With:
+- filesystem uploads/ directory
+
+
+----------------------------------------
+FILE: backend/src/main/java/com/givinghands/givinghands/util/EmailTemplateUtil.java
+----------------------------------------
+Purpose:
+Generates email subject and template name context for sending emails.
+Responsibilities:
+- map event types to template subjects/names.
+Connected With:
+- EmailService / notification service impls.
+
+
+========================================
+BACKEND: ARCHITECTURE EXPLANATION (BEGINNER-FRIENDLY)
+========================================
+
+----------------------------------------
+1) How Authentication Works
+----------------------------------------
+There are two authentication paths:
+
+A) Email/Password
+1. Frontend calls POST /api/auth/register
+   - AuthController.register() calls AuthServiceImpl.registerUser(...).
+   - User is saved with a BCrypt-hashed password.
+   - JWT is generated in AuthController using JwtService.generateToken(user).
+2. Frontend calls POST /api/auth/login
+   - AuthController.login() calls AuthServiceImpl.loginUser(...).
+   - Password is checked with BCrypt.
+   - JWT is generated and returned.
+
+B) Google OAuth
+1. Frontend navigates to /api/auth/oauth/google?role=...
+2. AuthController.googleOAuth(...)
+   - Stores requested role in session using OAuth2RoleHolder.
+   - Redirects the browser to Spring Security OAuth2 start URL: /oauth2/authorization/google.
+3. OAuth2LoginSuccessHandler and CustomOAuth2UserService handle account creation/update and login.
+4. A JWT is expected to be issued after successful OAuth flow (details may be in OAuth2LoginSuccessHandler).
+
+C) JWT Request Authentication
+1. For every request, JwtAuthenticationFilter checks Authorization header.
+2. If token is valid:
+   - It loads the user by email from the token.
+   - It sets SecurityContextHolder authentication with ROLE_<role> authority.
+
+Key files involved:
+- SecurityConfig
+- JwtAuthenticationFilter
+- JwtService
+- AuthController
+- AuthServiceImpl
+
+
+----------------------------------------
+2) Campaign Flow (Create → Admin Approve → Notifications)
+----------------------------------------
+A) Creating a campaign
+1. POST /api/campaigns with CampaignDTO.
+2. CampaignController delegates to CampaignServiceImpl.createCampaign().
+3. CampaignServiceImpl validates:
+   - title required
+   - goal > 0
+   - deadline required
+   - organizationId required
+4. It also restricts creation so only ORGANIZATION or ADMIN roles can create.
+5. Campaign is saved with status = PENDING.
+6. After saving, it publishes NotificationEvents.ADMIN_NEW_CAMPAIGN_REQUEST.
+
+B) Admin approves or rejects
+1. Admin calls PUT /api/admin/campaigns/{id}/approve (AdminController.approveCampaign).
+2. AdminServiceImpl.approveCampaign():
+   - sets status APPROVED
+   - saves campaign
+   - calls publishApprovalNotifications(saved)
+3. publishApprovalNotifications publishes:
+   - ORG_CAMPAIGN_APPROVED
+   - NEWSLETTER_CAMPAIGN_APPROVED_ACTIVE
+   - and if campaign allows volunteers: NEWSLETTER_VOLUNTEER_OPPORTUNITY
+4. If admin rejects:
+   - PUT /api/admin/campaigns/{id}/reject (AdminController.rejectCampaign)
+   - AdminServiceImpl.rejectCampaign() sets status REJECTED
+   - publishes ORG_CAMPAIGN_REJECTED
+
+Key files involved:
+- CampaignController
+- CampaignServiceImpl
+- AdminController
+- AdminServiceImpl
+- EmailNotificationListener
+- notification events/constants
+
+
+----------------------------------------
+3) How Donations Work (Donation → Funding update → Goal reached notifications)
+----------------------------------------
+1. Frontend calls POST /api/donations with DonationDTO.
+2. DonationController calls DonationServiceImpl.submitDonation().
+3. DonationServiceImpl:
+   - saves Donation record (status COMPLETED)
+   - publishes USER_DONATION_SUBMITTED
+   - updates Campaign currentAmount
+4. If updated currentAmount >= goalAmount:
+   - publishes NEWSLETTER_CAMPAIGN_GOAL_REACHED
+   - publishes ADMIN_CAMPAIGN_GOAL_REACHED
+5. EmailNotificationListener receives these events and triggers notification service methods.
+
+Key files involved:
+- DonationController
+- DonationServiceImpl
+- NotificationEvents
+- EmailNotificationListener
+
+
+----------------------------------------
+4) How Admin Approval Works
+----------------------------------------
+Admin logic is centralized:
+- AdminController: HTTP endpoints
+- AdminServiceImpl: business logic
+
+When admin approves:
+- Campaign status changes in DB.
+- Notifications are published through NotificationPublisher/Observer hub.
+
+This keeps business logic decoupled from email delivery.
+
+
+----------------------------------------
+5) How the Notification System Works (Observer pattern + email services)
+----------------------------------------
+The notification system is built around a simple Observer pipeline:
+
+Step A: Publish
+- Domain services (AuthServiceImpl, CampaignServiceImpl, DonationServiceImpl, VolunteerServiceImpl, AdminServiceImpl)
+  call notificationPublisher.publish(eventType, payload).
+
+Step B: Observer hub
+- NotificationPublisher forwards to NotificationEventManager.notify(eventType, data).
+- NotificationObserverConfig registers listeners, including EmailNotificationListener.
+
+Step C: Listener dispatch
+- EmailNotificationListener.update(eventType, data):
+  - Switches by event type string constants
+  - Extracts IDs from payload
+  - Calls the correct notification service method:
+    - NewsletterNotificationService
+    - OrganizationNotificationService
+    - UserNotificationService
+    - AdminNotificationService
+
+Step D: Email sending
+- The specific notification service implementations will use EmailService and Thymeleaf templates in
+  backend/src/main/resources/templates/emails/...
+
+Important files:
+- NotificationPublisher
+- NotificationObserverConfig
+- EmailNotificationListener
+- NotificationEvents
+- notification handler (NotificationDispatcher)
+
+
+----------------------------------------
+6) How Observer Pattern is Structured
+----------------------------------------
+There are two observer-related layers in the project:
+
+A) Generic CampaignEventManager / CampaignEventListener
+- pattern/observer/CampaignEventManager.java
+- pattern/observer/CampaignEventListener.java
+- pattern/observer/CampaignPublisher.java
+
+B) Application notification observer hub (used at runtime)
+- notification/NotificationPublisher.java
+- pattern/observer/NotificationEventManager.java (not opened here but referenced)
+- pattern/observer/NotificationListener.java
+- pattern/observer/EmailNotificationListener.java
+- pattern/observer/LoggingNotificationListener.java
+
+In practice for notification emails, the project uses NotificationEventManager + listeners.
+
+
+----------------------------------------
+7) How JWT Authentication Works (Summary)
+----------------------------------------
+- JwtService signs tokens with HMAC using app.jwt.secret.
+- JwtAuthenticationFilter validates signature + expiration.
+- It loads User by token subject (email) and sets role authority.
+
+
+----------------------------------------
+8) How Frontend Communicates with Backend
+----------------------------------------
+The frontend pages are static HTML served from backend/src/main/resources/static/
+(and also mirrored in the top-level frontend/ folder).
+
+Communication model:
+- The frontend uses JavaScript (frontend/js/main.js) to call backend REST APIs.
+- Typical endpoints used:
+  - /api/auth/register
+  - /api/auth/login
+  - /api/auth/me
+  - /api/campaigns (list/create/update/delete)
+  - /api/donations (submit + history)
+  - /api/admin/* (dashboard + moderation)
+  - /api/notifications/* (currently placeholder)
+
+Authorization model:
+- The frontend expects a JWT token returned from AuthController.
+- It then sends it in request header Authorization: Bearer <token>.
+- JwtAuthenticationFilter handles it.
+
+
+========================================
+FRONTEND: IMPORTANT FILE-BY-FILE EXPLANATION
+========================================
+
+The frontend folder contains static HTML pages and static JS/CSS.
+In addition, the backend also includes the same static files under backend/src/main/resources/static/.
+
+----------------------------------------
+FILE: frontend/index.html (and backend static/index.html)
+----------------------------------------
+Purpose:
+Landing page for the application.
+Responsibilities:
+- Display main navigation and basic hero sections.
+- Start client-side scripts.
+Connected With:
+- frontend/js/main.js
+- backend serves / (or /index.html) as public.
+
+
+----------------------------------------
+FILE: frontend/login.html (and backend static/login.html)
+----------------------------------------
+Purpose:
+User login UI.
+Responsibilities:
+- Collect email/password.
+- Call POST /api/auth/login.
+- Store returned JWT.
+Connected With:
+- frontend/js/main.js
+- backend AuthController endpoints.
+
+
+----------------------------------------
+FILE: frontend/register.html (and backend static/register.html)
+----------------------------------------
+Purpose:
+User registration UI.
+Responsibilities:
+- Collect name/email/password/role (role controls allowed types).
+- Call POST /api/auth/register.
+- Store returned JWT.
+Connected With:
+- backend AuthController register endpoint.
+
+
+----------------------------------------
+FILE: frontend/oauth-callback.html (and backend static/oauth-callback.html)
+----------------------------------------
+Purpose:
+Handles UI after OAuth callback.
+Responsibilities:
+- Read token from redirect parameters or backend session.
+- Continue user flow.
+Connected With:
+- OAuth2LoginSuccessHandler and redirect URLs.
+
+
+----------------------------------------
+FILE: frontend/admin-dashboard.html (and backend static/admin-dashboard.html)
+----------------------------------------
+Purpose:
+Admin dashboard tables/visualizations.
+Responsibilities:
+- Call admin endpoints to render stats.
+- Visualize totals (total raised, counts).
+Connected With:
+- GET /api/admin/statistics
+- GET /api/admin/volunteers/dashboard
+- GET /api/admin/donations
+
+
+----------------------------------------
+FILE: frontend/campaign-details.html (and backend static/campaign-details.html)
+----------------------------------------
+Purpose:
+Campaign detail page (display campaign info and allow donation/volunteering).
+Responsibilities:
+- Display campaign content and image.
+- Call /api/campaigns/{id} to load details.
+- Allow submitting donations and volunteer applications.
+Connected With:
+- GET /api/campaigns/{id}
+- POST /api/donations
+- POST /api/volunteers (expected via VolunteerController)
+- Image served by /api/campaigns/{campaignId}/image/file/{filename}
+
+
+----------------------------------------
+FILE: frontend/organization.html (and backend static/organization.html)
+----------------------------------------
+Purpose:
+Organization profile + campaign management UI.
+Responsibilities:
+- Create campaign, edit, upload image.
+- View volunteers and donation contributions.
+Connected With:
+- POST/PUT /api/campaigns (creator side)
+- Volunteer and donation endpoints
+
+
+----------------------------------------
+FILE: frontend/profile.html (and backend static/profile.html)
+----------------------------------------
+Purpose:
+User profile page.
+Responsibilities:
+- Display current user info from GET /api/auth/me
+- Upload avatar/cover (uploads avatars/ in backend).
+Connected With:
+- GET /api/auth/me
+- UserController endpoints.
+
+
+----------------------------------------
+FILE: frontend/volunteer.html (and backend static/volunteer.html)
+----------------------------------------
+Purpose:
+Volunteer application UI.
+Responsibilities:
+- Apply to a campaign with reason/skills/availability.
+- Show application status.
+Connected With:
+- VolunteerController endpoints.
+
+
+----------------------------------------
+FILE: frontend/css/style.css (and backend static/css/style.css)
+----------------------------------------
+Purpose:
+Global styling for the HTML pages.
+Responsibilities:
+- Layout, theme, responsive styling.
+Connected With:
+- HTML via <link> tags.
+
+
+----------------------------------------
+FILE: frontend/js/main.js (and backend static/js/main.js)
+----------------------------------------
+Purpose:
+Main client-side logic (API calls, rendering, event handlers).
+Responsibilities:
+- Handle login/register flows.
+- Call campaign/donation/volunteer endpoints.
+- Render campaign lists and details.
+Connected With:
+- Backend REST APIs under /api/*
+
+
+----------------------------------------
+FILE: frontend/js/stats-animation.js (and backend static/js/stats-animation.js)
+----------------------------------------
+Purpose:
+Animations for dashboard stats (animated counters, etc.).
+Responsibilities:
+- Animate numbers using frontend data.
+Connected With:
+- admin-dashboard.html.
+
+
+========================================
+MAJOR EMAIL TEMPLATES (BEGINNER-FRIENDLY VIEW)
+========================================
+Backend uses Thymeleaf templates for transactional emails.
+Templates live in:
+- backend/src/main/resources/templates/emails/
+
+These templates are selected by the notification service layer (e.g., NewsletterNotificationServiceImpl, etc.).
+Main template purpose groups:
+- Admin templates:
+  - admin_campaign_goal_reached.html
+  - admin_new_campaign_request.html
+  - admin_new_org_registered.html
+- Newsletter templates:
+  - campaign_approved_active.html
+  - campaign_goal_reached.html
+  - new_volunteer_opportunity.html
+- Organization templates:
+  - org_registration_welcome.html
+  - org_welcome_approved.html
+  - org_campaign_approved.html
+  - org_campaign_rejected.html
+  - org_volunteer_applied.html
+- User templates:
+  - user_donation_submitted.html
+  - user_volunteer_approved.html
+  - user_volunteer_rejected.html
+
+Base template:
+- base.html provides common HTML layout and a th:replace="~{::content}" fragment.
+
+
+========================================
+END OF DOCUMENTATION
+========================================
+

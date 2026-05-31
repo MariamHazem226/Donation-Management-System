@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Dashboard | GivingHands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="org-page">
+  <nav class="nav-main">
+    <div class="nav-container">
+
+      <div class="nav-brand">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+          <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#3B82F6" />
+          <circle cx="16" cy="12" r="2" fill="white" />
+        </svg>
+        <span class="brand-text">Giving<span>Hands</span></span>
+      </div>
+      <div class="nav-actions">
+        <a href="login.html" class="btn-secondary" onclick="logout();return false;">Sign Out</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="org-container">
+    <!-- Org Header -->
+    <div class="org-header">
+      <div class="org-banner" style="position:relative;">
+        <img id="orgCover" src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=1200" alt="Banner" style="width:100%;height:220px;object-fit:cover;">
+        <label class="cover-upload-label">
+          <i class="fas fa-camera"></i> Change Cover
+          <input type="file" accept="image/*" onchange="previewOrgCover(this)">
+        </label>
+      </div>
+      <div class="org-info-wrapper">
+        <div class="avatar-upload-wrapper org-logo">
+          <img id="orgLogo" src="https://randomuser.me/api/portraits/lego/1.jpg" alt="Logo" style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:4px solid white;">
+          <label class="avatar-upload-label" title="Change logo">
+            <i class="fas fa-camera"></i>
+            <input type="file" accept="image/*" onchange="previewOrgLogo(this)">
+          </label>
+        </div>
+        <div class="org-details">
+          <h1 id="orgName">Loading...</h1>
+          <div class="org-meta">
+            <span><i class="fas fa-envelope"></i> <span id="orgEmail">-</span></span>
+          </div>
+          <div class="org-actions" style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+            <button class="btn-primary" onclick="createNewCampaign()"><i class="fas fa-plus"></i> Create Campaign</button>
+            <button class="btn-secondary" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs
+    <div class="org-tabs">
+      <button class="tab-btn active" data-tab="campaigns">My Campaigns</button>
+      <button class="tab-btn" data-tab="analytics">Analytics</button>
+      <button class="tab-btn" data-tab="settings">Settings</button>
+    </div> -->
+
+    <!-- Campaigns Tab -->
+    <div id="campaignsTab" class="tab-content active">
+      <div class="campaigns-management">
+        <div class="campaigns-filters" style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;">
+          <div class="search-box-small" style="flex:1;min-width:200px;">
+            <i class="fas fa-search"></i>
+            <input type="text" id="orgCampaignSearch" placeholder="Search campaigns...">
+          </div>
+          <select id="campaignStatusFilter" style="padding:0.5rem 1rem;border-radius:8px;border:1px solid #e5e7eb;">
+            <option value="all">All Status</option>
+            <option value="APPROVED">Approved</option>
+            <option value="PENDING">Pending</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
+        <!-- <div class="org-volunteers-panel" id="orgVolunteersPanel">
+          <h3><i class="fas fa-hands-helping"></i> Volunteer Applications</h3>
+          <p style="color:#6b7280;font-size:0.875rem;margin:-0.5rem 0 1rem;">Contact details for every applicant across your campaigns.</p>
+          <div id="orgVolunteersList"><p style="color:#9ca3af;">Loading applications...</p></div>
+        </div> -->
+        <div id="orgCampaignsList"></div>
+      </div>
+    </div>
+
+    <!-- Analytics Tab -->
+    <div id="analyticsTab" class="tab-content">
+      <div class="analytics-real" id="analyticsCards">
+        <div class="analytics-card">
+          <h4>Total Raised</h4>
+          <div class="analytics-value" id="analyticsTotalRaised">$0</div>
+        </div>
+        <div class="analytics-card">
+          <h4>My Campaigns</h4>
+          <div class="analytics-value" id="analyticsCampaignCount">0</div>
+        </div>
+        <div class="analytics-card">
+          <h4>Approved Campaigns</h4>
+          <div class="analytics-value" id="analyticsApprovedCampaigns">0</div>
+        </div>
+        <div class="analytics-card">
+          <h4>Total Volunteers</h4>
+          <div class="analytics-value" id="analyticsTotalVolunteers">0</div>
+        </div>
+      </div>
+      <div style="background:white;border-radius:12px;padding:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <h3>Top Performing Campaigns</h3>
+        <div id="topPerformingCampaigns"></div>
+      </div>
+    </div>
+
+    <!-- Settings Tab -->
+    <div id="settingsTab" class="tab-content">
+      <div class="org-settings">
+        <form id="orgSettingsForm" class="settings-form">
+          <h3>Organization Information</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Organization Name</label>
+              <input type="text" id="settingsOrgName" placeholder="Organization name">
+            </div>
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="settingsOrgEmail" placeholder="contact@org.com">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>New Password</label>
+              <input type="password" id="settingsOrgPassword" placeholder="Leave blank to keep current">
+            </div>
+            <div class="form-group">
+              <label>Confirm Password</label>
+              <input type="password" id="settingsOrgPasswordConfirm" placeholder="Repeat new password">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Mission Statement</label>
+            <textarea id="settingsOrgMission" rows="3" placeholder="Describe your organization's mission..."></textarea>
+          </div>
+          <button type="submit" class="btn-primary">Save Settings</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Campaign Modal -->
+  <div id="createCampaignModal" class="modal-overlay">
+    <div class="modal-container modal-large">
+      <div class="modal-header">
+        <h3>Create New Campaign</h3>
+        <button class="modal-close" onclick="closeModal('createCampaignModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="newCampaignForm">
+          <div class="form-group">
+            <label>Campaign Title *</label>
+            <input type="text" id="campaignTitle" placeholder="e.g., Help Gaza Children" required>
+          </div>
+
+          <div class="form-group">
+            <label>Campaign Image</label>
+            <input type="file" id="campaignImageFile" accept="image/*" style="width:100%;padding:0.6rem;" />
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="campaignCategory">
+              <option>Education</option>
+              <option>Health</option>
+              <option>Environment</option>
+              <option>Emergency</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea id="campaignDescription" rows="4" placeholder="Describe your campaign..." required></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Fundraising Goal ($) *</label>
+              <input type="number" id="campaignGoal" placeholder="50000" required>
+            </div>
+            <div class="form-group">
+              <label>Duration (days) *</label>
+              <input type="number" id="campaignDuration" placeholder="30" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="checkbox" style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
+              <input type="checkbox" id="campaignAllowVolunteers" checked>
+              <span>Enable Volunteering</span>
+            </label>
+            <small style="color:#6b7280;display:block;margin-top:0.25rem;">
+              When enabled, supporters can apply as volunteers on the campaign page.
+            </small>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeModal('createCampaignModal')">Cancel</button>
+            <button type="submit" class="btn-primary">Create Campaign</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Campaign Modal -->
+  <div id="editCampaignModal" class="modal-overlay">
+    <div class="modal-container modal-large">
+      <div class="modal-header">
+        <h3>Edit Campaign</h3>
+        <button class="modal-close" onclick="closeModal('editCampaignModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="editCampaignForm" enctype="multipart/form-data">
+          <input type="hidden" id="editCampaignId">
+          <div class="form-group">
+            <label>Campaign Title</label>
+            <input type="text" id="editCampaignTitle" required>
+          </div>
+          <div class="form-group">
+            <label>Category</label>
+            <select id="editCampaignCategory">
+              <option>Education</option>
+              <option>Health</option>
+              <option>Environment</option>
+              <option>Emergency</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Description</label>
+            <textarea id="editCampaignDescription" rows="4" required></textarea>
+          </div>
+          <div class="form-group">
+            <label>Fundraising Goal ($)</label>
+            <input type="number" id="editCampaignGoal" required>
+          </div>
+
+          <div class="form-group" style="margin-top:1rem;">
+            <label>Campaign Photo</label>
+            <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+              <img id="editCampaignImagePreview" alt="Campaign preview"
+                   src="https://images.unsplash.com/photo-1509062522246-3755977927d7?w=400"
+                   style="width:96px;height:64px;object-fit:cover;border-radius:10px;border:1px solid #e5e7eb;">
+              <div style="flex:1;min-width:220px;">
+                <input type="file" id="editCampaignImageFile" accept="image/*" style="width:100%;padding:0.6rem;" />
+                <small style="color:#6b7280;display:block;margin-top:0.25rem;">
+                  Select a new photo to replace the current campaign image.
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn-secondary" onclick="closeModal('editCampaignModal')">Cancel</button>
+            <button type="button" style="background:#fee2e2;color:#991b1b;border:none;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;" onclick="deleteCampaign()">Delete</button>
+            <button type="submit" class="btn-primary">Save Changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Volunteers Modal per Campaign -->
+  <div id="volunteersModal" class="modal-overlay">
+    <div class="modal-container modal-large">
+      <div class="modal-header">
+        <h3>Volunteers for <span id="volunteersModalTitle"></span></h3>
+        <button class="modal-close" onclick="closeModal('volunteersModal')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="volunteersModalList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="js/main.js"></script>
+  <script>
+    const API = 'http://localhost:8080/api';
+
+    // ── Image preview ──
+    function previewOrgLogo(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('orgLogo').src = e.target.result;
+        const user = getCurrentUser();
+        if (user) { user.avatar = e.target.result; saveCurrentUser(user); }
+        showToast('Logo updated!');
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function previewOrgCover(input) {
+      if (!input.files || !input.files[0]) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        document.getElementById('orgCover').src = e.target.result;
+        const user = getCurrentUser();
+        if (user) { user.cover = e.target.result; saveCurrentUser(user); }
+        showToast('Cover updated!');
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+
+    function escapeHtml(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function volunteerStatusClass(status) {
+      const s = (status || 'PENDING').toUpperCase();
+      if (s === 'ACCEPTED' || s === 'APPROVED') return 'approved';
+      if (s === 'REJECTED') return 'rejected';
+      return 'pending';
+    }
+
+    function volunteerStatusLabel(status) {
+      const s = (status || 'PENDING').toUpperCase();
+      if (s === 'ACCEPTED') return 'APPROVED';
+      return s;
+    }
+
+    function renderVolunteerOrgCard(v, options = {}) {
+      const showCampaign = options.showCampaign !== false;
+      const campaignId = v.campaignId;
+      const campaignTitle = escapeHtml(v.campaignTitle || options.campaignTitle || 'Campaign');
+      const titleForFn = (v.campaignTitle || options.campaignTitle || '').replace(/'/g, "\\'");
+      const email = v.email ? escapeHtml(v.email) : '—';
+      const phone = v.phone ? escapeHtml(v.phone) : '—';
+      const emailLink = v.email
+        ? `<a href="mailto:${encodeURIComponent(v.email)}">${email}</a>`
+        : '—';
+      const phoneLink = v.phone
+        ? `<a href="tel:${encodeURIComponent(v.phone)}">${phone}</a>`
+        : '—';
+
+      return `
+        <div class="volunteer-row">
+          <div class="vol-info">
+            <h4>${escapeHtml(v.volunteerName || 'Volunteer')}</h4>
+            <div class="vol-contact">
+              <span><i class="fas fa-envelope"></i>${emailLink}</span>
+              <span><i class="fas fa-phone"></i>${phoneLink}</span>
+            </div>
+            ${showCampaign ? `<p class="vol-campaign-name"><i class="fas fa-bullhorn"></i> ${campaignTitle}</p>` : ''}
+            <dl class="vol-meta-grid">
+              <div><dt>Applied</dt><dd>${escapeHtml(v.appliedDate || '—')}</dd></div>
+              <div><dt>Availability</dt><dd>${escapeHtml(v.availability || '—')}</dd></div>
+              <div><dt>Skills</dt><dd>${escapeHtml(v.skills || '—')}</dd></div>
+              <div><dt>Experience</dt><dd>${escapeHtml(v.experience || '—')}</dd></div>
+            </dl>
+            ${v.whyJoin ? `<p style="margin:0.75rem 0 0;font-size:0.8rem;color:#6b7280;font-style:italic;">"${escapeHtml(v.whyJoin)}"</p>` : ''}
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:0.75rem;flex-wrap:wrap;">
+            <span class="status-badge ${volunteerStatusClass(v.status)}">${volunteerStatusLabel(v.status)}</span>
+            <div class="vol-actions">
+              ${(v.status || 'PENDING').toUpperCase() === 'PENDING' ? `
+                <button class="btn-sm btn-approve" onclick="approveVol(${v.id}, ${campaignId}, '${titleForFn}')">Approve</button>
+                <button class="btn-sm btn-reject" onclick="rejectVol(${v.id}, ${campaignId}, '${titleForFn}')">Reject</button>
+              ` : ''}
+              <button class="btn-sm btn-danger-sm" onclick="deleteVol(${v.id}, ${campaignId}, '${titleForFn}')">Remove</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderOrgVolunteersOverview(volCounts, myCampaigns) {
+      const panel = document.getElementById('orgVolunteersList');
+      if (!panel) return;
+
+      const all = [];
+      for (const c of myCampaigns) {
+        const vols = volCounts[c.id] || [];
+        vols.forEach(v => {
+          all.push({
+            ...v,
+            campaignTitle: v.campaignTitle || c.title,
+            campaignId: v.campaignId || c.id
+          });
+        });
+      }
+
+      if (all.length === 0) {
+        panel.innerHTML = '<p style="color:#9ca3af;">No volunteer applications yet.</p>';
+        return;
+      }
+
+      all.sort((a, b) => {
+        const da = a.appliedDate || '';
+        const db = b.appliedDate || '';
+        return db.localeCompare(da);
+      });
+
+      panel.innerHTML = all.map(v => renderVolunteerOrgCard(v, { showCampaign: true })).join('');
+    }
+
+    // ── Org-specific render ──
+    async function renderOrgCampaignsFull() {
+      const user = getCurrentUser();
+      if (!user) return;
+      const container = document.getElementById('orgCampaignsList');
+      container.innerHTML = '<p style="color:#9ca3af;">Loading...</p>';
+
+      try {
+        const allCampaigns = await fetch(`${API}/campaigns`).then(r => r.json());
+        const myCampaigns = allCampaigns.filter(c =>
+          c.organizationId === user.id || (c.creator && c.creator.id === user.id)
+        );
+
+        const search = document.getElementById('orgCampaignSearch')?.value?.toLowerCase() || '';
+        const statusFilter = document.getElementById('campaignStatusFilter')?.value || 'all';
+
+        let filtered = myCampaigns
+          .filter(c => statusFilter === 'all' || c.status === statusFilter)
+          .filter(c => !search || c.title.toLowerCase().includes(search));
+
+        // Load volunteer applications for all org campaigns
+        let totalVols = 0;
+        const volCounts = {};
+        for (const c of myCampaigns) {
+          try {
+            const vols = await fetch(`${API}/volunteers?campaignId=${c.id}`).then(r => r.json());
+            volCounts[c.id] = vols;
+            totalVols += vols.length;
+          } catch (e) { volCounts[c.id] = []; }
+        }
+        document.getElementById('analyticsTotalVolunteers').textContent = totalVols;
+        renderOrgVolunteersOverview(volCounts, myCampaigns);
+
+        // Update analytics
+        const totalRaised = myCampaigns.reduce((s, c) => s + (c.currentAmount || 0), 0);
+        const approvedCamps = myCampaigns.filter(c => c.status === 'APPROVED').length;
+        document.getElementById('analyticsTotalRaised').textContent = '$' + totalRaised.toLocaleString();
+        document.getElementById('analyticsCampaignCount').textContent = myCampaigns.length;
+        document.getElementById('analyticsApprovedCampaigns').textContent = approvedCamps;
+
+        // Top performing
+        const top = document.getElementById('topPerformingCampaigns');
+        if (top) {
+          const sorted = [...myCampaigns].sort((a,b) => (b.currentAmount||0) - (a.currentAmount||0)).slice(0,3);
+          top.innerHTML = sorted.map(c => `
+            <div style="display:flex;justify-content:space-between;padding:0.75rem 0;border-bottom:1px solid #f3f4f6;">
+              <strong>${c.title}</strong>
+              <span style="color:#3B82F6;font-weight:600;">$${(c.currentAmount||0).toLocaleString()}</span>
+            </div>
+          `).join('');
+        }
+
+        if (filtered.length === 0) {
+          container.innerHTML = '<p style="color:#9ca3af;padding:2rem 0;">No campaigns found. Create your first campaign!</p>';
+          return;
+        }
+
+        container.innerHTML = filtered.map(c => {
+          const goal = c.goalAmount || 1;
+          const current = c.currentAmount || 0;
+          const pct = Math.min(Math.round((current / goal) * 100), 100);
+          const vols = volCounts[c.id] || [];
+          const pendingVols = vols.filter(v => v.status === 'PENDING').length;
+
+          return `
+            <div class="org-campaign-card">
+              <div class="card-body">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.5rem;">
+                  <div>
+                    <h3 style="margin:0 0 0.25rem;">${c.title}</h3>
+                    <span class="status-badge ${c.status === 'APPROVED' ? 'approved' : 'pending'}">${c.status || 'PENDING'}</span>
+                    ${c.category ? `<span style="margin-left:0.5rem;font-size:0.8rem;color:#6b7280;">${c.category}</span>` : ''}
+                  </div>
+                  <div style="text-align:right;">
+                    <div style="font-size:1.25rem;font-weight:700;color:#3B82F6;">$${current.toLocaleString()}</div>
+                    <div style="font-size:0.8rem;color:#6b7280;">of $${goal.toLocaleString()} goal</div>
+                  </div>
+                </div>
+                <div class="progress-bar" style="margin:1rem 0 0.25rem;">
+                  <div class="progress-fill" style="width:${pct}%"></div>
+                </div>
+                <div style="font-size:0.8rem;color:#6b7280;margin-bottom:1rem;">${pct}% funded</div>
+                <p style="color:#6b7280;font-size:0.875rem;margin:0 0 1rem;">${(c.description||'').substring(0,120)}...</p>
+
+                <div class="card-actions">
+                  <button class="btn-sm btn-primary" onclick="editOrgCampaign(${c.id})">
+                    <i class="fas fa-edit"></i> Edit
+                  </button>
+                  <button class="btn-sm" style="background:#f3f4f6;color:#374151;" onclick="showVolunteersModal(${c.id}, '${c.title.replace(/'/g,"\\'")}')">
+                    <i class="fas fa-users"></i> Volunteers (${vols.length}${pendingVols > 0 ? ' · ' + pendingVols + ' pending' : ''})
+                  </button>
+                  <button class="btn-sm btn-danger-sm" onclick="orgDeleteCampaign(${c.id})">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch(e) {
+        container.innerHTML = '<p style="color:#ef4444;">Failed to load campaigns.</p>';
+      }
+    }
+
+    async function showVolunteersModal(campaignId, title) {
+      document.getElementById('volunteersModalTitle').textContent = title;
+      document.getElementById('volunteersModal').style.display = 'flex';
+      const list = document.getElementById('volunteersModalList');
+      list.innerHTML = '<p style="color:#9ca3af;">Loading...</p>';
+
+      try {
+        const vols = await fetch(`${API}/volunteers?campaignId=${campaignId}`).then(r => r.json());
+        if (!vols.length) {
+          list.innerHTML = '<p style="color:#9ca3af;">No volunteers yet.</p>';
+          return;
+        }
+        list.innerHTML = vols.map(v => renderVolunteerOrgCard(
+          { ...v, campaignTitle: v.campaignTitle || title, campaignId },
+          { showCampaign: false }
+        )).join('');
+      } catch(e) {
+        list.innerHTML = '<p style="color:#ef4444;">Failed to load volunteers.</p>';
+      }
+    }
+
+    async function approveVol(volId, campaignId, title) {
+      try {
+        await fetch(`${API}/volunteers/${volId}/approve`, { method: 'PUT' });
+        showToast('Volunteer approved!');
+        await showVolunteersModal(campaignId, title);
+        await renderOrgCampaignsFull();
+      } catch(e) { showToast('Failed to approve', 'error'); }
+    }
+
+
+    async function rejectVol(volId, campaignId, title) {
+      if (!confirm('Reject this volunteer?')) return;
+      try {
+        await fetch(`${API}/volunteers/${volId}/reject`, { method: 'PUT' });
+        showToast('Volunteer rejected');
+        await showVolunteersModal(campaignId, title);
+        await renderOrgCampaignsFull();
+      } catch (e) {
+        showToast('Failed to reject volunteer', 'error');
+      }
+    }
+
+    async function deleteVol(volId, campaignId, title) {
+      if (!confirm('Remove this volunteer application?')) return;
+      try {
+        await fetch(`${API}/volunteers/${volId}`, { method: 'DELETE' });
+        showToast('Volunteer removed');
+        await showVolunteersModal(campaignId, title);
+        await renderOrgCampaignsFull();
+      } catch (e) {
+        showToast('Failed to remove volunteer', 'error');
+      }
+    }
+
+    async function orgDeleteCampaign(id) {
+      if (!confirm('Delete this campaign? This cannot be undone.')) return;
+      try {
+        await fetch(`${API}/campaigns/${id}`, { method: 'DELETE' });
+        showToast('Campaign deleted!');
+        renderOrgCampaignsFull();
+      } catch(e) { showToast('Failed to delete', 'error'); }
+    }
+
+    // ── Init ──
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = getCurrentUser();
+      if (!user) { window.location.href = 'login.html'; return; }
+
+      // Set header info
+      document.getElementById('orgName').textContent = user.name;
+      document.getElementById('orgEmail').textContent = user.email;
+      if (user.avatar) document.getElementById('orgLogo').src = user.avatar;
+      if (user.cover) document.getElementById('orgCover').src = user.cover;
+
+      // Fill settings
+      const nameInput = document.getElementById('settingsOrgName');
+      const emailInput = document.getElementById('settingsOrgEmail');
+      if (nameInput) nameInput.value = user.name;
+      if (emailInput) emailInput.value = user.email;
+
+      // Tabs
+      document.querySelectorAll('.org-tabs .tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.org-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.org-container .tab-content').forEach(t => t.classList.remove('active'));
+          btn.classList.add('active');
+          const tab = document.getElementById(btn.dataset.tab + 'Tab');
+          if (tab) tab.classList.add('active');
+        });
+      });
+
+      // Filters
+      document.getElementById('orgCampaignSearch')?.addEventListener('input', renderOrgCampaignsFull);
+      document.getElementById('campaignStatusFilter')?.addEventListener('change', renderOrgCampaignsFull);
+
+      // Load campaigns
+      await renderOrgCampaignsFull();
+
+      // Create campaign form
+      const newForm = document.getElementById('newCampaignForm');
+      if (newForm) {
+        newForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const deadline = new Date();
+          deadline.setDate(deadline.getDate() + (parseInt(document.getElementById('campaignDuration').value) || 30));
+          try {
+            const createRes = await fetch(`${API}/campaigns`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title: document.getElementById('campaignTitle').value,
+                description: document.getElementById('campaignDescription').value,
+                category: document.getElementById('campaignCategory').value,
+                goalAmount: parseFloat(document.getElementById('campaignGoal').value),
+                deadline: deadline.toISOString().split('T')[0],
+                organizationId: user.id
+              })
+            });
+
+            if (!createRes.ok) throw new Error('Failed to create campaign');
+            const createdCampaign = await createRes.json();
+
+            const fileInput = document.getElementById('campaignImageFile');
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+              const formData = new FormData();
+              formData.append('file', fileInput.files[0]);
+              await fetch(`${API}/campaigns/${createdCampaign.id}/image`, {
+                method: 'POST',
+                body: formData
+              });
+            }
+            showToast('Campaign created successfully!');
+            closeModal('createCampaignModal');
+            newForm.reset();
+            const imgEl = document.getElementById('campaignImageFile');
+            if (imgEl) imgEl.value = '';
+            await renderOrgCampaignsFull();
+          } catch(err) { showToast('Failed to create campaign', 'error'); }
+        });
+      }
+
+      // Edit campaign form
+      const editForm = document.getElementById('editCampaignForm');
+      if (editForm) {
+        editForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const id = document.getElementById('editCampaignId').value;
+          try {
+            await fetch(`${API}/campaigns/${id}`, {
+              method: 'PUT',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                title: document.getElementById('editCampaignTitle').value,
+                category: document.getElementById('editCampaignCategory').value,
+                description: document.getElementById('editCampaignDescription').value,
+                goalAmount: parseFloat(document.getElementById('editCampaignGoal').value)
+              })
+            });
+
+            // 2) Upload image if selected
+            const fileInput = document.getElementById('editCampaignImageFile');
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+              const formData = new FormData();
+              formData.append('file', fileInput.files[0]);
+              await fetch(`${API}/campaigns/${id}/image`, {
+                method: 'POST',
+                body: formData
+              });
+            }
+            showToast('Campaign updated!');
+            closeModal('editCampaignModal');
+            await renderOrgCampaignsFull();
+          } catch(err) { showToast('Failed to update', 'error'); }
+        });
+      }
+
+      // Settings form
+      const settingsForm = document.getElementById('orgSettingsForm');
+      if (settingsForm) {
+        settingsForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const updatedUser = getCurrentUser();
+          const newName = document.getElementById('settingsOrgName').value;
+          const newEmail = document.getElementById('settingsOrgEmail').value;
+          const newPass = document.getElementById('settingsOrgPassword').value;
+          const confirmPass = document.getElementById('settingsOrgPasswordConfirm').value;
+
+          if (newPass && newPass !== confirmPass) {
+            showToast('Passwords do not match!', 'error'); return;
+          }
+          if (newName) updatedUser.name = newName;
+          if (newEmail) updatedUser.email = newEmail;
+          saveCurrentUser(updatedUser);
+          document.getElementById('orgName').textContent = updatedUser.name;
+          document.getElementById('orgEmail').textContent = updatedUser.email;
+          showToast('Settings saved!');
+        });
+      }
+    });
+
+    // Expose editOrgCampaign
+    function editOrgCampaign(id) {
+      fetch(`${API}/campaigns/${id}`)
+        .then(r => r.json())
+        .then(c => {
+          document.getElementById('editCampaignId').value = c.id;
+          document.getElementById('editCampaignTitle').value = c.title;
+          document.getElementById('editCampaignGoal').value = c.goalAmount || c.goal || '';
+          document.getElementById('editCampaignDescription').value = c.description || '';
+          const catSelect = document.getElementById('editCampaignCategory');
+      if (catSelect && c.category) {
+            const opt = [...catSelect.options].find(o => o.value === c.category);
+            if (opt) catSelect.value = c.category;
+          }
+
+          // Prefill photo preview
+          const previewEl = document.getElementById('editCampaignImagePreview');
+          if (previewEl) previewEl.src = c.image || previewEl.src;
+          const fileInputEl = document.getElementById('editCampaignImageFile');
+          if (fileInputEl) fileInputEl.value = '';
+
+          document.getElementById('editCampaignModal').style.display = 'flex';
+        });
+    }
+
+    async function deleteCampaign() {
+      const id = document.getElementById('editCampaignId').value;
+      if (!id || !confirm('Delete this campaign?')) return;
+      try {
+        await fetch(`${API}/campaigns/${id}`, { method: 'DELETE' });
+        showToast('Campaign deleted!');
+        closeModal('editCampaignModal');
+        await renderOrgCampaignsFull();
+      } catch(e) { showToast('Failed to delete', 'error'); }
+    }
+
+    window.editOrgCampaign = editOrgCampaign;
+    window.deleteCampaign = deleteCampaign;
+    window.showVolunteersModal = showVolunteersModal;
+    window.approveVol = approveVol;
+    window.rejectVol = rejectVol;
+    window.deleteVol = deleteVol;
+    window.orgDeleteCampaign = orgDeleteCampaign;
+  </script>
+
+  <script>
+    // ── Restore images immediately from localStorage (normalize avatar/cover keys) ──
+    (function() {
+      const user = getCurrentUser ? getCurrentUser() : JSON.parse(localStorage.getItem('currentUser') || 'null');
+      if (!user) return;
+
+      if (!user.avatar && user.avatarUrl) user.avatar = user.avatarUrl;
+      if (!user.cover && user.coverUrl) user.cover = user.coverUrl;
+
+      // Note: this org page uses #orgLogo and #orgCover ids
+      if (user.avatar) { const el = document.getElementById('orgLogo'); if (el) el.src = user.avatar; }
+      if (user.cover)  { const el = document.getElementById('orgCover'); if (el) el.src = user.cover;  }
+    })();
+
+    // ── Image upload handler for org ──
+    async function handleOrgImageUpload(file, type) {
+      if (!file) return;
+      const user = getCurrentUser();
+      if (!user) return;
+
+      const imgEl = type === 'avatar'
+        ? document.getElementById('orgLogoImg')
+        : document.getElementById('orgCoverImg');
+
+      // Preview immediately
+      const base64 = await new Promise(res => {
+        const r = new FileReader();
+        r.onload = e => res(e.target.result);
+        r.readAsDataURL(file);
+      });
+
+      if (imgEl) imgEl.src = base64;
+      if (type === 'avatar') user.avatar = base64;
+      else user.cover = base64;
+      saveCurrentUser(user);
+      if (type === 'avatar') updateNavForLoggedInUser();
+      showToast('Uploading...');
+
+      // Try backend
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const res = await fetch(`http://localhost:8080/api/users/${user.id}/${type}`, {
+          method: 'POST', body: formData
+        });
+        if (res.ok) {
+          const data = await res.json();
+          const backendUrl = 'http://localhost:8080' + (data.avatarUrl || data.coverUrl || '');
+          if (type === 'avatar') { user.avatar = backendUrl; user.avatarUrl = backendUrl; if (imgEl) imgEl.src = backendUrl; updateNavForLoggedInUser(); }
+          else { user.cover = backendUrl; user.coverUrl = backendUrl; if (imgEl) imgEl.src = backendUrl; }
+          saveCurrentUser(user);
+          showToast(type === 'avatar' ? 'Logo saved! ✅' : 'Cover saved! ✅');
+          return;
+        }
+      } catch(e) {}
+      showToast('Image saved locally ✅');
+    }
+
+    // Wire up inputs after DOM loads
+    document.addEventListener('DOMContentLoaded', () => {
+      const logoInput = document.getElementById('orgLogoInput');
+      const coverInput = document.getElementById('orgCoverInput');
+      if (logoInput) logoInput.addEventListener('change', function() { handleOrgImageUpload(this.files && this.files[0], 'avatar'); });
+      if (coverInput) coverInput.addEventListener('change', function() { handleOrgImageUpload(this.files && this.files[0], 'cover'); });
+    });
+  </script>
+</body>
+</html>

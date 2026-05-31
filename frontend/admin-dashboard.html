@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | GivingHands</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-body">
+  <div class="dashboard-layout">
+    <!-- Sidebar -->
+    <!-- Mobile menu toggle for dashboard sidebar -->
+    <button class="hamburger-btn" onclick="toggleMobileMenu()" style="position: fixed; top: 1rem; left: 1rem; z-index: 300; background: white; border-radius: 50%; width: 48px; height: 48px; box-shadow: var(--shadow-lg);">
+      <i class="fas fa-bars"></i>
+    </button>
+    
+    <aside class="dashboard-sidebar">
+      <div class="sidebar-header">
+        <div class="logo-mini">
+          <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+            <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#3B82F6"/>
+            <circle cx="16" cy="12" r="2" fill="white"/>
+          </svg>
+          <span>GivingHands</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="nav-item active" data-view="dashboard">
+          <i class="fas fa-tachometer-alt"></i>
+          <span>Dashboard</span>
+          <span class="badge">Live</span>
+        </a>
+        <a href="#" class="nav-item" data-view="campaigns">
+          <i class="fas fa-bullhorn"></i>
+          <span>Campaigns</span>
+        </a>
+        <a href="#" class="nav-item" data-view="donations">
+          <i class="fas fa-chart-line"></i>
+          <span>Donations</span>
+        </a>
+        <a href="#" class="nav-item" data-view="volunteers">
+          <i class="fas fa-users"></i>
+          <span>Volunteers</span>
+        </a>
+        <a href="#" class="nav-item" data-view="users">
+          <i class="fas fa-user-friends"></i>
+          <span>Users</span>
+        </a>
+
+      </nav>
+      <div class="sidebar-footer">
+        <a href="index.html" class="nav-item">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <div class="dashboard-header">
+        <div class="header-left">
+          <h1>Dashboard</h1>
+<p>Welcome back, <span id="adminWelcomeName">Admin</span></p>
+        </div>
+        <div class="header-right">
+          <!-- <div class="notification-bell">
+            <i class="fas fa-bell"></i>
+            <span class="notification-dot"></span>
+          </div> -->
+          <div class="user-profile">
+            <img src="https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png" alt="Admin">
+            <div class="user-info">
+<span class="user-name" id="adminHeaderName">Sarah Johnson</span>
+              <span class="user-role">Super Admin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard View -->
+      <div id="dashboardView" class="dashboard-view active">
+        <h2 style="display:none;">Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <i class="fas fa-dollar-sign"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-label">Total Raised</span>
+              <span class="stat-value">$2,458,392</span>
+              <span class="stat-trend positive">
+                <i class="fas fa-arrow-up"></i> +23.5%
+              </span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-label">Active Donors</span>
+              <span class="stat-value">3,847</span>
+              <span class="stat-trend positive">
+                <i class="fas fa-arrow-up"></i> +12.3%
+              </span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <i class="fas fa-hands-helping"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-label">Volunteers</span>
+              <span class="stat-value">1,203</span>
+              <span class="stat-trend positive">
+                <i class="fas fa-arrow-up"></i> +8.7%
+              </span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <i class="fas fa-bullhorn"></i>
+            </div>
+            <div class="stat-details">
+              <span class="stat-label">Active Campaigns</span>
+              <span class="stat-value">24</span>
+              <span class="stat-trend neutral">+2 new</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-charts">
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Monthly Donation Trends</h3>
+              <select class="chart-select">
+                <option>Last 6 months</option>
+                <option>Last year</option>
+              </select>
+            </div>
+            <div class="chart-bars" id="donationChart"></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <h3>Top Campaigns</h3>
+              <a href="#" class="view-all">View all →</a>
+            </div>
+            <div class="top-campaigns-list" id="topCampaigns"></div>
+          </div>
+        </div>
+
+        <div class="recent-activity">
+          <div class="section-title">
+            <h3>Recent Activity</h3>
+            <a href="#">View all</a>
+          </div>
+          <div class="activity-timeline" id="activityTimeline"></div>
+        </div>
+      </div>
+
+      <!-- Campaigns View -->
+      <div id="campaignsView" class="dashboard-view">
+        <div class="table-container">
+          <div class="table-header">
+            <h2>Campaign Management</h2>
+            <button class="btn-primary" onclick="showToast('Create campaign form would open here')">
+              <i class="fas fa-plus"></i> New Campaign
+            </button>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Creator</th>
+                <th>Goal</th>
+                <th>Raised</th>
+                <th>Progress</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="campaignsTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Donations View -->
+      <div id="donationsView" class="dashboard-view">
+        <div class="table-container">
+          <div class="table-header">
+            <h2>Donation History</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="donationsTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Volunteers View -->
+      <div id="volunteersView" class="dashboard-view">
+
+        <div class="table-container">
+          <div class="table-header">
+            <h2>Volunteer Management</h2>
+            <div class="table-actions">
+              <input type="text" placeholder="Filter volunteers..." id="volunteerSearch">
+            </div>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Volunteer</th>
+                <th>Email</th>
+                <th>Campaign</th>
+                <th>Joined Date</th>
+                <th>Hours</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="volunteersTable"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users View -->
+      <div id="usersView" class="dashboard-view">
+        <div class="table-container">
+          <div class="table-header">
+            <h2>User Management</h2>
+          </div>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Joined</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="js/main.js"></script>
+</body>
+</html>

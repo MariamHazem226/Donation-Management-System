@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content">
+    <h2 style="margin:0 0 8px 0;">New Volunteer Application</h2>
+    <p>A volunteer has applied for your campaign.</p>
+
+    <p style="margin-top:14px;">
+        Campaign: <strong th:text="${campaignTitle}">Campaign</strong>
+    </p>
+    <p>
+        Volunteer: <strong th:text="${volunteerName}">Name</strong>
+    </p>
+</div>
+</body>
+</html>
+

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GivingHands | Donation & Volunteer Management Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div class="app-wrapper">
+    <!-- Modern Navigation -->
+    <nav class="nav-main">
+      <div class="nav-container">
+
+        <div class="nav-brand">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#3B82F6" stroke="#2563EB" stroke-width="1.5"/>
+            <path d="M4 16L16 24L28 16" stroke="#2563EB" stroke-width="1.5" fill="none"/>
+            <path d="M4 20L16 28L28 20" stroke="#2563EB" stroke-width="1.5" fill="none"/>
+            <circle cx="16" cy="12" r="2" fill="white"/>
+          </svg>
+          <span class="brand-text">Giving<span>Hands</span></span>
+        </div>
+        <div class="nav-actions">
+
+          <a href="login.html" class="btn-secondary">Login</a>
+          <a href="register.html" class="btn-primary">Register</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Slider with Stats -->
+    <!-- Full-width Bootstrap Carousel -->
+    <div id="heroSlider" class="carousel slide carousel-fade hero-slider" data-bs-ride="carousel" data-bs-interval="5000">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"></button>
+      </div>
+      
+      <div class="carousel-inner">
+        <!-- Slide 1: Volunteer Impact -->
+        <div class="carousel-item active">
+          <div class="hero-slide" style="background: linear-gradient(135deg, rgba(30,58,138,0.3), rgba(76,175,80,0.3)), url('https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80') center/cover;">
+            <div class="hero-overlay">
+              <div class="container">
+                <div class="row align-items-center min-vh-100">
+                  <div class="col-lg-6">
+                    <div class="hero-badge">
+                      <span class="badge-dot"></span>
+                      Make a Difference Today
+                    </div>
+                    <h1 class="hero-headline">
+                      Your <span class="gradient-text">Volunteering</span><br>
+                      Changes Lives
+                    </h1>
+                    <p class="hero-description">
+                      Join thousands of volunteers transforming communities through hands-on service, 
+                      education programs, and environmental protection.
+                    </p>
+                    <div class="hero-cta-group">
+                      <a href="#campaigns" class="btn-primary-large">
+                        <i class="fas fa-heart me-2"></i>Start Giving
+                      </a>
+                      <a href="volunteer.html" class="btn-outline-large">
+                        <i class="fas fa-hands-helping me-2"></i>Volunteer
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Slide 2: Community Volunteering -->
+        <div class="carousel-item">
+          <div class="hero-slide" style="background: linear-gradient(135deg, rgba(76,175,80,0.3), rgba(30,58,138,0.3)), url('https://images.unsplash.com/photo-1580582932707-520aed937b7b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80') center/cover;">
+            <div class="hero-overlay">
+              <div class="container">
+                <div class="row align-items-center min-vh-100">
+                  <div class="col-lg-6">
+                    <div class="hero-badge">
+                      <span class="badge-dot"></span>
+                      Community Service
+                    </div>
+                    <h1 class="hero-headline">
+                      Build <span class="gradient-text">Stronger</span><br>
+                      Communities Together
+                    </h1>
+                    <p class="hero-description">
+                      Volunteer in local programs teaching skills, building infrastructure, 
+                      and supporting families in need across your community.
+                    </p>
+                    <div class="hero-cta-group">
+                      <a href="#campaigns" class="btn-primary-large">
+                        <i class="fas fa-heart me-2"></i>Start Giving
+                      </a>
+                      <a href="volunteer.html" class="btn-outline-large">
+                        <i class="fas fa-hands-helping me-2"></i>Volunteer
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Slide 3: Environmental Volunteering -->
+        <div class="carousel-item">
+          <div class="hero-slide" style="background: linear-gradient(135deg, rgba(30,58,138,0.3), rgba(76,175,80,0.3)), url('https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80') center/cover;">
+            <div class="hero-overlay">
+              <div class="container">
+                <div class="row align-items-center min-vh-100">
+                  <div class="col-lg-6">
+                    <div class="hero-badge">
+                      <span class="badge-dot"></span>
+                      Environmental Action
+                    </div>
+                    <h1 class="hero-headline">
+                      Protect Our <span class="gradient-text">Planet</span><br>
+                      Through Service
+                    </h1>
+                    <p class="hero-description">
+                      Join conservation efforts, cleanups, tree planting, and wildlife protection 
+                      initiatives to preserve our environment for future generations.
+                    </p>
+                    <div class="hero-cta-group">
+                      <a href="#campaigns" class="btn-primary-large">
+                        <i class="fas fa-heart me-2"></i>Start Giving
+                      </a>
+                      <a href="volunteer.html" class="btn-outline-large">
+                        <i class="fas fa-hands-helping me-2"></i>Volunteer
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+   <section class="statistics">
+  <div class="statistics-container">
+
+
+    <div class="statistics-card">
+      <div class="stat-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+      <div class="stat-number" data-target="5200000">$0</div>
+      <div class="stat-label">Total Donations Raised</div>
+    </div>
+
+    <div class="statistics-card">
+      <div class="stat-icon">
+        <i class="fas fa-users"></i>
+      </div>
+      <div class="stat-number" data-target="28450">0</div>
+      <div class="stat-label">Active Volunteers & Donors</div>
+    </div>
+
+    <div class="statistics-card">
+      <div class="stat-icon">
+        <i class="fas fa-project-diagram"></i>
+      </div>
+      <div class="stat-number" data-target="156">0</div>
+      <div class="stat-label">Live Campaigns</div>
+    </div>
+
+  </div>
+</section>
+
+
+    <!-- Filter & Search Bar -->
+    <div class="filter-bar-wrapper">
+      <div class="container">
+        <div class="filter-container">
+          <div class="search-field">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search campaigns by title, cause, or location...">
+          </div>
+          <div class="filter-group">
+            <button class="filter-chip active" data-category="all">
+              <i class="fas fa-th-large"></i> All
+            </button>
+            <button class="filter-chip" data-category="Education">
+              <i class="fas fa-graduation-cap"></i> Education
+            </button>
+            <button class="filter-chip" data-category="Health">
+              <i class="fas fa-heartbeat"></i> Health
+            </button>
+            <button class="filter-chip" data-category="Environment">
+              <i class="fas fa-leaf"></i> Environment
+            </button>
+            <button class="filter-chip" data-category="Emergency">
+              <i class="fas fa-ambulance"></i> Emergency
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Campaigns Grid -->
+    <section id="campaigns" class="campaigns-section">
+      <div class="container">
+<div class="section-header">
+          <div>
+            <h2>Active Campaigns</h2>
+            <p>Discover causes that need your support</p>
+          </div>
+        </div>
+        <div id="campaignsGrid" class="row"></div>
+        <div id="skeletonLoader" class="skeleton-grid">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+      <div class="container-fluid">
+        <div class="newsletter-card">
+          <div class="newsletter-content">
+            <h3>Stay updated with impact stories</h3>
+            <p>Get weekly updates about campaigns reaching their goals and volunteer opportunities</p>
+          </div>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Enter your email">
+            <button class="btn-primary">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+<footer class="footer-minimal">
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-brand-simple">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+              <path d="M16 4L4 12L16 20L28 12L16 4Z" fill="#4CAF50" stroke="#388E3C" stroke-width="1.5"/>
+              <circle cx="16" cy="12" r="2" fill="white"/>
+            </svg>
+            <span>GivingHands</span>
+          </div>
+          <div class="footer-links-simple">
+            <a href="about-us.html">About Us</a>
+            <a href="terms-of-service.html">Terms of Service</a>
+            <a href="privacy-policy.html">Privacy Policy</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>© 2025 GivingHands. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toastContainer" class="toast-container"></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>
